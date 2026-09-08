@@ -1,0 +1,41 @@
+name: Deploy to WP Engine
+
+# Deploys the brewco-landing plugin to WP Engine over SSH/rsync on every push.
+# Uses WP Engine's official action: https://github.com/wpengine/github-action-wpe-site-deploy
+#
+# Required repo config (Settings → Secrets and variables → Actions):
+#   Secret   WPE_SSHG_KEY_PRIVATE  = the PRIVATE SSH key whose PUBLIC half is
+#                                    added to your WP Engine profile's SSH Keys
+#                                    (Profile → SSH Keys — the SSH *Gateway*
+#                                    key, NOT a GitPush key).
+#   Variable WPE_ENV               = the Brewco WP Engine environment (install)
+#                                    name, e.g. "brewco" (production) or a
+#                                    staging install name. Until this variable
+#                                    is set the deploy uses the placeholder
+#                                    fallback below and will fail — replace it.
+
+on:
+  push:
+    branches:
+      - claude/brewco-landing-template
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy brewco-landing plugin to WP Engine
+        uses: wpengine/github-action-wpe-site-deploy@v3
+        with:
+          WPE_SSHG_KEY_PRIVATE: ${{ secrets.WPE_SSHG_KEY_PRIVATE }}
+          # Install/environment name. Uses the WPE_ENV repo Variable if set,
+          # otherwise falls back to the placeholder below (replace it).
+          WPE_ENV: ${{ vars.WPE_ENV || 'brewco' }}
+          SRC_PATH: "brewco-landing/"
+          REMOTE_PATH: "wp-content/plugins/brewco-landing/"
+          PHP_LINT: TRUE
+          FLAGS: -azvr --inplace --delete --exclude=".*"
