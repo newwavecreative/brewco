@@ -1,5 +1,5 @@
 /* =============================================================
-   New Wave Creative — Landing Template
+   Brewco Marketing Group — Landing Template
    Animation layer. Vanilla JS, no dependencies. Loaded once globally.
    Mirrors the reference's Framer-Motion feel with:
      - scroll reveals (IntersectionObserver)

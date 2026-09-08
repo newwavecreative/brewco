@@ -64,12 +64,10 @@ add_action( 'wp_enqueue_scripts', function () {
 	$js    = BREWCO_LANDING_DIR . 'assets/js/main.js';
 	$lenis = BREWCO_LANDING_DIR . 'assets/js/lenis.min.js';
 
-	wp_enqueue_style(
-		'brewco-landing-fonts',
-		'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800&display=swap',
-		array(),
-		null
-	);
+	// Brewco's typeface is Cero Pro Light, self-hosted on this WordPress install
+	// by the "Use Any Font" plugin. The @font-face in styles.css points at
+	// /wp-content/uploads/useanyfont/ directly, so there is no external font
+	// request here — nothing to enqueue from Google Fonts.
 	wp_enqueue_style(
 		'brewco-landing',
 		BREWCO_LANDING_URL . 'assets/css/styles.css',
