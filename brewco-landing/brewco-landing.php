@@ -15,6 +15,10 @@ define( 'BREWCO_LANDING_URL', plugin_dir_url( __FILE__ ) );
 /** Template identifier stored as the page's _wp_page_template meta. */
 const BREWCO_LANDING_SLUG = 'brewco-landing';
 
+/** Field accessors + the ACF field group. Both reference the slug above. */
+require_once __DIR__ . '/inc/helpers.php';
+require_once __DIR__ . '/inc/fields.php';
+
 /**
  * Versioned asset URL (adds ?v=<filemtime>) so browsers/CDNs always fetch the
  * current file — otherwise <img>/<video> tags cache indefinitely across deploys.

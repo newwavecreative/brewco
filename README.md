@@ -57,7 +57,9 @@ verifiable on brewco.com: 25 years, 100% employee-owned, 4 offices.
 brewco-landing/                  ← the plugin (this whole folder is deployed)
   brewco-landing.php               main file: registers template + enqueues assets
   templates/landing-template.php   full-page document (own nav/footer, wp_head/footer)
-  template-parts/landing.php       the section blocks (edit copy/images here)
+  template-parts/landing.php       the section blocks (markup + fallback copy)
+  inc/fields.php                   ACF field group (registered in PHP)
+  inc/helpers.php                  field accessors, each with a shipped fallback
   assets/
     css/styles.css                 design system (brand vars) + all styles
     js/main.js                     animation layer (Lenis smooth scroll + reveals)
@@ -105,9 +107,52 @@ rsyncs `brewco-landing/` into `wp-content/plugins/brewco-landing/`.
    values in `template-parts/landing.php` at their URLs (or just replace the
    bundled SVGs in `assets/` with same-named files).
 
-## Editing
+## Editing the content (ACF)
 
-- **Copy & images:** `brewco-landing/template-parts/landing.php`
+Page copy is driven by an **ACF Pro** field group, so the client edits it in the
+page editor rather than in PHP.
+
+- **Field definitions:** `brewco-landing/inc/fields.php`
+- **Accessors:** `brewco-landing/inc/helpers.php`
+- **Markup:** `brewco-landing/template-parts/landing.php`
+
+Three things worth knowing before you touch it:
+
+**The field group is registered in PHP, not built in the admin.** It uses
+`acf_add_local_field_group()`, so the fields live in version control and deploy
+with the plugin. A group created through the ACF admin UI would live only in
+that install's database — present on production, absent everywhere else, and
+free to drift. The trade-off is that the group shows as read-only in the ACF
+admin: **edit `inc/fields.php`, not the UI.**
+
+**Every field falls back to the copy the template shipped with.** ACF's
+`default_value` only fires when a post is *created*, so an existing page comes
+back with every field empty. The accessors take the original string as a
+fallback (`brewco_field( 'hero_sub', 'Brewco Marketing Group is…' )`), which
+means the page renders exactly as it shipped until someone deliberately
+overrides a field — and still renders if ACF is ever deactivated. Verified: with
+ACF off, the output is text- and structure-identical to the deployed version.
+
+**Two-tone headings are two fields.** The copper accent is a separate
+`*_heading_accent` field rather than a `<span>` typed into the editor, so no one
+has to write HTML to get "Award-Winning *Experiential Brand Strategy*". The
+accent always renders after the plain part.
+
+Repeaters cover the client bar, stats, services, vehicles, offices, steps,
+stories, footer highlights and social links. The two marquees (clients and
+partner stories) **emit their track twice in PHP** for the seamless loop — add
+each item once; the duplicate is generated. Short bullet lists inside a service
+card are a textarea, one item per line.
+
+All output is escaped (`esc_html` / `esc_url` / `esc_attr`). Field values cannot
+inject markup.
+
+## Editing (structural)
+
+- **Copy & images:** the page editor (see above). The fallbacks live in
+  `brewco-landing/template-parts/landing.php`
+- **Nav labels, section eyebrows, footer legal:** deliberately *not* fields —
+  they never change; edit `template-parts/landing.php`
 - **Look, scroll, layering, animation:** `brewco-landing/assets/css/styles.css`
   and `brewco-landing/assets/js/main.js`
 - **Colors/fonts:** the `:root` block at the top of `styles.css`
