@@ -76,8 +76,6 @@ function brewco_register_fields() {
 
 		/* ---------------------------------------------------------- HERO */
 		brewco_f_tab( 'Hero' ),
-		brewco_f( 'text', 'hero_badge_1', 'Badge 1', array( 'default_value' => '100% Employee-Owned' ) ),
-		brewco_f( 'text', 'hero_badge_2', 'Badge 2', array( 'default_value' => '25 Years' ) ),
 		brewco_f( 'textarea', 'hero_headline', 'Headline', array(
 			'rows'         => 2,
 			'default_value' => 'The Marketing Vehicle for the World’s Most Trusted Brands',

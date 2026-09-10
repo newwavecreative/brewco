@@ -133,8 +133,6 @@ p{margin:0}
 /* -------- Pills -------- */
 .pill{display:inline-flex;align-items:center;gap:.5em;padding:.5em 1em;border-radius:999px;
   background:rgba(255,255,255,.14);color:#fff;font-weight:600;font-size:.88rem;backdrop-filter:blur(6px)}
-.pill--rating .stars{color:var(--cta);letter-spacing:1px}
-.pill--flag{background:rgba(255,255,255,.14)}
 .pill--contact{background:var(--gray-100);color:var(--navy)}
 .stars{color:var(--cta);letter-spacing:2px}
 
@@ -187,10 +185,7 @@ p{margin:0}
 /* single left-aligned column: badges, headline, copy, CTAs all stacked left */
 .hero__grid{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:min(100%,640px);
   gap:22px;align-items:end;justify-content:start;padding-top:100px;padding-bottom:min(11vh,120px)}
-.hero__badges{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
 /* rating shown as plain text (no filled chip), like the reference */
-.hero__badges .pill{background:transparent;backdrop-filter:none;padding:0;font-size:.9rem}
-.hero__badges .pill--flag{opacity:.85}
 .hero__title{font-size:clamp(2.8rem,7.5vw,5.6rem);color:#fff;letter-spacing:-.03em;line-height:.98}
 .hero__right{padding-bottom:8px}
 .hero__sub{margin:0;font-size:clamp(1rem,1.3vw,1.12rem);max-width:540px;opacity:.9}
@@ -559,7 +554,7 @@ p{margin:0}
    ============================================================= */
 .eyebrow,.stat__label,.tag,.plan__badge,.product__badge,.bento__step,
 .footer__bottom,.feature span,.review figcaption span,.product__note,
-.chart__key,.pill,.hero__badges .pill,.btn,.footer__nav a,.footer__pills .pill{
+.chart__key,.pill,.btn,.footer__nav a,.footer__pills .pill{
   font-size:1rem}
 .chart__axis,.chart__lbl{font-size:16px}
 /* keep the uppercase micro-labels legible but not oversized at the 16px floor */

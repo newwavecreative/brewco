@@ -165,10 +165,6 @@ $stories = brewco_rows( 'stories', $fb_stories );
   </div>
   <div class="brewco-container hero__grid">
     <div class="hero__left">
-      <div class="hero__badges" data-reveal>
-        <span class="pill"><?php echo brewco_t( 'hero_badge_1', '100% Employee-Owned' ); ?></span>
-        <span class="pill"><?php echo brewco_t( 'hero_badge_2', '25 Years' ); ?></span>
-      </div>
       <h1 class="hero__title" data-reveal data-reveal-delay="80"><?php echo brewco_t_br( 'hero_headline', 'The Marketing Vehicle for the World’s Most Trusted Brands' ); ?></h1>
     </div>
     <div class="hero__right" data-reveal data-reveal-delay="180">
