@@ -156,6 +156,19 @@ inject markup.
 - **Look, scroll, layering, animation:** `brewco-landing/assets/css/styles.css`
   and `brewco-landing/assets/js/main.js`
 - **Colors/fonts:** the `:root` block at the top of `styles.css`
+- **Hero scrim (the darkening over the background):** five variables at the top
+  of `styles.css` — `--hero-scrim-top` / `--hero-scrim-bottom` /
+  `--hero-scrim-left` control the main gradient, and `--hero-nav-scrim` /
+  `--hero-nav-scrim-h` a top-only band that keeps the white logo and nav links
+  legible over bright photography. Set `--hero-nav-scrim` to `0` to drop it.
+  Raise the scrim values if a bright image makes the headline hard to read;
+  lower them to show more of the photo.
+- **Hero slideshow:** add two or more images to the *Hero → Background
+  slideshow* gallery field and they cross-fade; one image just sits still.
+  *Seconds per slide* sets the interval, `--hero-fade` the fade length. It
+  pauses while the browser tab is hidden and holds on the first slide under
+  `prefers-reduced-motion`. The single *Background image (fallback)* field is
+  only used when the gallery is empty.
 
 Asset URLs auto cache-bust on deploy (the plugin versions them with `filemtime`),
 so changes show up on a normal refresh.

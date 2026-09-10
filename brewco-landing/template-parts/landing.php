@@ -144,8 +144,23 @@ $stories = brewco_rows( 'stories', $fb_stories );
 
 <!-- SECTION 02 — HERO -->
 <section class="hero" id="hero">
-  <div class="hero__bg">
-    <img src="<?php echo brewco_image_url( 'hero_image', 'img/placeholder.svg' ); ?>" alt="" aria-hidden="true">
+  <?php
+  /* Slideshow, falling back to the single legacy image field, then the placeholder.
+     Each slide is stacked and cross-faded by main.js; the first ships with
+     .is-active so the hero still renders with JS disabled. */
+  $hero_slides = brewco_gallery_urls( 'hero_slides' );
+  if ( ! $hero_slides ) {
+      $hero_slides = array( brewco_image_url( 'hero_image', 'img/placeholder.svg' ) );
+  }
+  $hero_secs = (float) brewco_field( 'hero_slide_seconds', 6 );
+  ?>
+  <div class="hero__bg" data-slide-seconds="<?php echo esc_attr( $hero_secs ); ?>">
+    <?php foreach ( $hero_slides as $i => $slide_url ) : ?>
+      <img class="hero__slide<?php echo 0 === $i ? ' is-active' : ''; ?>"
+           src="<?php echo $slide_url; /* already escaped by the helper */ ?>"
+           alt="" aria-hidden="true"
+           <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'; ?>>
+    <?php endforeach; ?>
     <div class="hero__overlay"></div>
   </div>
   <div class="brewco-container hero__grid">

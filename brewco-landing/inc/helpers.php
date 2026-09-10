@@ -51,6 +51,30 @@ function brewco_image_url( $name, $fallback_rel ) {
 	return brewco_landing_asset( $fallback_rel );
 }
 
+/**
+ * A gallery (or image repeater) field as a list of URLs. Returns an empty array
+ * when unset, so callers can decide their own fallback chain.
+ */
+function brewco_gallery_urls( $name ) {
+	$out = array();
+	$v   = function_exists( 'get_field' ) ? get_field( $name ) : null;
+	if ( ! is_array( $v ) ) { return $out; }
+	foreach ( $v as $item ) {
+		// ACF gallery rows may be attachment arrays, bare IDs or URLs.
+		if ( is_array( $item ) ) {
+			if ( ! empty( $item['url'] ) ) { $out[] = esc_url( $item['url'] ); }
+			continue;
+		}
+		if ( is_numeric( $item ) ) {
+			$src = wp_get_attachment_image_url( (int) $item, 'full' );
+			if ( $src ) { $out[] = esc_url( $src ); }
+			continue;
+		}
+		if ( is_string( $item ) && '' !== $item ) { $out[] = esc_url( $item ); }
+	}
+	return $out;
+}
+
 /** Escaped text. */
 function brewco_t( $name, $fallback = '' ) {
 	return esc_html( brewco_field( $name, $fallback ) );

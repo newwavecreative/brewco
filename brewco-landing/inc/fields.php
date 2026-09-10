@@ -86,7 +86,20 @@ function brewco_register_fields() {
 		brewco_f( 'textarea', 'hero_sub', 'Intro paragraph', array( 'rows' => 4 ) ),
 		brewco_f( 'text', 'hero_cta_label', 'Button label', array( 'default_value' => 'Get a Custom Quote' ) ),
 		brewco_f( 'text', 'hero_link_label', 'Secondary link label', array( 'default_value' => 'See our work' ) ),
-		brewco_f( 'image', 'hero_image', 'Background image', $img ),
+		brewco_f( 'gallery', 'hero_slides', 'Background slideshow', array(
+			'return_format' => 'array',
+			'preview_size'  => 'medium',
+			'instructions'  => 'Two or more images cross-fade automatically. One image just sits still. Drag to reorder — the first one shows first.',
+		) ),
+		brewco_f( 'number', 'hero_slide_seconds', 'Seconds per slide', array(
+			'default_value' => 6,
+			'min'           => 2,
+			'max'           => 30,
+			'append'        => 'sec',
+		) ),
+		brewco_f( 'image', 'hero_image', 'Background image (fallback)', array_merge( $img, array(
+			'instructions' => 'Only used if the slideshow above is empty.',
+		) ) ),
 
 		/* ------------------------------------------------------ LOGO BAR */
 		brewco_f_tab( 'Client bar' ),

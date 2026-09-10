@@ -61,13 +61,13 @@
   /* ---------- 4. Parallax + hero zoom + showcase card rotation ---------- */
   var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
   var rotateEls = Array.prototype.slice.call(document.querySelectorAll('[data-rotate]'));
-  var heroImg = document.querySelector('.hero__bg video, .hero__bg img');
+  var heroMedia = Array.prototype.slice.call(document.querySelectorAll('.hero__bg video, .hero__bg img'));
   // Reduced-motion: hold the hero video on its poster frame instead of looping.
   if (reduce) {
     var hv = document.querySelector('.hero__bg video');
     if (hv) { hv.removeAttribute('autoplay'); hv.pause && hv.pause(); }
   }
-  if (!reduce && (parallaxEls.length || rotateEls.length || heroImg)) {
+  if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length)) {
     var ticking = false;
     var applyParallax = function () {
       var vh = window.innerHeight;
@@ -86,11 +86,13 @@
         el.style.transform = 'rotateY(' + rotY.toFixed(1) + 'deg)';
       });
       // Hero image drifts down and zooms slightly as you scroll past it.
-      if (heroImg) {
+      if (heroMedia.length) {
         var hy = window.scrollY;
         if (hy < vh * 1.3) {
-          heroImg.style.transform =
-            'translate3d(0,' + (hy * 0.28).toFixed(1) + 'px,0) scale(' + (1 + hy * 0.00035).toFixed(4) + ')';
+          // Same transform on every slide, or the inactive ones would sit still
+          // while the visible one drifts — visible the moment a slide fades in.
+          var ht = 'translate3d(0,' + (hy * 0.28).toFixed(1) + 'px,0) scale(' + (1 + hy * 0.00035).toFixed(4) + ')';
+          heroMedia.forEach(function (m) { m.style.transform = ht; });
         }
       }
       ticking = false;
@@ -101,6 +103,39 @@
     window.addEventListener('scroll', requestParallax, { passive: true });
     window.addEventListener('resize', requestParallax);
     applyParallax();
+  }
+
+  /* ---------- 4a. Hero background slideshow ----------
+     Cross-fades the stacked .hero__slide images. Only runs with 2+ slides, so a
+     single-image hero is untouched. Under reduced-motion it holds slide 1.
+     Pauses while the tab is hidden — no point burning timers in the background. */
+  var heroSlides = Array.prototype.slice.call(document.querySelectorAll('.hero__bg .hero__slide'));
+  if (heroSlides.length > 1 && !reduce) {
+    var heroBg = document.querySelector('.hero__bg');
+    var slideSecs = parseFloat(heroBg && heroBg.getAttribute('data-slide-seconds'));
+    if (!isFinite(slideSecs) || slideSecs < 2) { slideSecs = 6; }
+
+    var slideIdx = 0;
+    for (var si = 0; si < heroSlides.length; si++) {
+      if (heroSlides[si].classList.contains('is-active')) { slideIdx = si; break; }
+    }
+
+    var slideTimer = null;
+    var advanceSlide = function () {
+      heroSlides[slideIdx].classList.remove('is-active');
+      slideIdx = (slideIdx + 1) % heroSlides.length;
+      heroSlides[slideIdx].classList.add('is-active');
+    };
+    var startSlides = function () {
+      if (!slideTimer) { slideTimer = window.setInterval(advanceSlide, slideSecs * 1000); }
+    };
+    var stopSlides = function () {
+      if (slideTimer) { window.clearInterval(slideTimer); slideTimer = null; }
+    };
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stopSlides(); } else { startSlides(); }
+    });
+    startSlides();
   }
 
   /* ---------- 4b. Lenis smooth scroll (the library the reference/Framer uses) ----------
