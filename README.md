@@ -167,8 +167,11 @@ inject markup.
   name. The name is the logo's alt text, and is shown as text instead when no
   logo is uploaded — so logos can be added one at a time. Logos share one height
   (`--logo-h`) with a width cap (`--logo-max-w`); horizontal logos read best,
-  and a tall stacked logo will come out narrow. Upload at roughly twice the
-  display height (~90px+) so they stay sharp on high-density screens. Full
+  and a tall stacked logo will come out narrow. Logos display 55px tall, so
+  upload at roughly twice that (~110px+) to stay sharp on high-density screens.
+  **Crop each PNG tight to the mark** — empty margin baked into the file is
+  drawn as part of the logo, so a padded file looks smaller than its
+  neighbours at the same height. Full
   colour by default; `--logo-filter: grayscale(1)` + `--logo-opacity: .6` gives
   a muted strip that colours on hover. WordPress blocks SVG uploads without an
   SVG plugin — use transparent PNGs.

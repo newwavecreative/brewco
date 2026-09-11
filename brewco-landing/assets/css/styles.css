@@ -76,9 +76,10 @@
      a width cap. Full colour by default — recognisability was the point of
      switching to logos. For a quieter, uniform strip set --logo-filter to
      grayscale(1) and --logo-opacity to .6 (hover restores colour). */
-  --logo-h:        44px;
-  --logo-max-w:   170px;
-  --logo-gap:      56px;
+  --logo-h:        55px;    /* was 44px  (+25%, 2026-09-11) */
+  --logo-max-w:   212.5px;  /* was 170px (+25%) — must scale with --logo-h, or wide
+                               logos already at the cap (KOHLER, AXE) cannot grow */
+  --logo-gap:      70px;    /* was 56px  (+25%) */
   --logo-filter:   none;
   --logo-opacity:  1;
 
