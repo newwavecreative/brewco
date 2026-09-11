@@ -180,6 +180,13 @@ inject markup.
   how much is in it, so adding clients made it race; `main.js` now recomputes
   the duration from the track's width. Change the number to change the pace.
   The partner-stories marquee still uses its fixed CSS duration.
+- **Service image slide:** service card images drift in from the side they sit
+  on as the card scrolls up (the cards alternate, so odd cards enter from the
+  right, even from the left). It is scroll-linked, not a one-shot animation:
+  `SLIDE_PX` in `main.js` sets the distance, the `0.35` beside it the pace. The
+  cards clip it (`overflow:hidden`), so an image is revealed by the card edge
+  instead of floating over the section. Off below 821px, where the layout
+  stacks and images are centred, and off under `prefers-reduced-motion`.
 - **Partner-story logos:** each story in *Partner stories → Stories* takes a
   logo, which replaces the brand name at the top of the card. The brand name
   becomes the logo's alt text, and still shows as text when no logo is

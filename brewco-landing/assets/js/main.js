@@ -62,12 +62,14 @@
   var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
   var rotateEls = Array.prototype.slice.call(document.querySelectorAll('[data-rotate]'));
   var heroMedia = Array.prototype.slice.call(document.querySelectorAll('.hero__bg video, .hero__bg img'));
+  var slideEls = Array.prototype.slice.call(document.querySelectorAll('[data-slide-in]'));
+  var SLIDE_PX = 120;   // how far a service image travels before settling
   // Reduced-motion: hold the hero video on its poster frame instead of looping.
   if (reduce) {
     var hv = document.querySelector('.hero__bg video');
     if (hv) { hv.removeAttribute('autoplay'); hv.pause && hv.pause(); }
   }
-  if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length)) {
+  if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length || slideEls.length)) {
     var ticking = false;
     var applyParallax = function () {
       var vh = window.innerHeight;
@@ -77,6 +79,28 @@
         var offset = (rect.top + rect.height / 2 - vh / 2) * -factor;
         el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
       });
+      // Service card images slide in from the side they sit on as the card comes
+      // up the viewport. Distance eases out so the last stretch settles gently
+      // rather than stopping dead. Skipped under 821px, where the layout stacks
+      // and the images are centred — see the media query in styles.css.
+      if (slideEls.length && window.innerWidth > 820) {
+        slideEls.forEach(function (el) {
+          var card = el.closest ? (el.closest('.featurecard') || el) : el;
+          var rect = card.getBoundingClientRect();
+          // 0 when the card's top is at the bottom of the viewport, 1 once it has
+          // risen to 35% of the way up — roughly two thirds of a screen of
+          // scrolling. Deliberately linear: an ease-out finishes ~85% of the
+          // travel before the card is properly in view, which reads as a snap
+          // rather than a drift. SLIDE_PX and the 0.35 set distance and pace.
+          var p = (vh - rect.top) / (vh - vh * 0.35);
+          p = Math.max(0, Math.min(1, p));
+          var dir = parseFloat(el.getAttribute('data-slide-in')) || 1;
+          el.style.transform = 'translate3d(' + (dir * SLIDE_PX * (1 - p)).toFixed(1) + 'px,0,0)';
+        });
+      } else if (slideEls.length) {
+        slideEls.forEach(function (el) { el.style.transform = ''; });
+      }
+
       // Showcase card turns toward the viewer as it scrolls through the viewport.
       rotateEls.forEach(function (el) {
         var rect = el.getBoundingClientRect();

@@ -298,7 +298,9 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
           <?php $simg = brewco_image_data( is_array( $svc ) && isset( $svc['image'] ) ? $svc['image'] : null ); ?>
           <?php if ( $simg ) : ?>
             <?php $sfit = 'fit' === brewco_row( $svc, 'image_fit', 'fill' ) ? 'fit' : 'fill'; ?>
-            <div class="featurecard__icon featurecard__icon--img featurecard__icon--<?php echo $sfit; ?>">
+            <?php /* Cards alternate sides: odd cards hold the image right, even
+                     cards left. 1 = enter from the right, -1 = from the left. */ ?>
+            <div class="featurecard__icon featurecard__icon--img featurecard__icon--<?php echo $sfit; ?>" data-slide-in="<?php echo 0 === $i % 2 ? '1' : '-1'; ?>">
               <img src="<?php echo $simg['url']; ?>"<?php echo brewco_img_dims( $simg ); ?> alt="<?php echo esc_attr( $simg['alt'] ); ?>" loading="lazy" decoding="async">
             </div>
           <?php else : ?>
