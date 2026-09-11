@@ -180,6 +180,11 @@ inject markup.
   how much is in it, so adding clients made it race; `main.js` now recomputes
   the duration from the track's width. Change the number to change the pace.
   The partner-stories marquee still uses its fixed CSS duration.
+- **Partner-story logos:** each story in *Partner stories → Stories* takes a
+  logo, which replaces the brand name at the top of the card. The brand name
+  becomes the logo's alt text, and still shows as text when no logo is
+  uploaded. Card headers are held to the logo height (`--story-logo-h`) even
+  for text brands, so quotes stay level in a mixed set.
 - **Vehicle links:** each row in *Vehicles → Vehicle types* has a *Link*.
   With a link the pill is clickable (and gets the hover lift); without one it's
   a plain pill. The built-in list links all ten to brewco.com's

@@ -85,6 +85,8 @@
   --logo-gap:      70px;    /* was 56px  (+25%) */
   --logo-filter:   none;
   --logo-opacity:  1;
+  --story-logo-h:     40px;   /* logos heading the partner-story cards */
+  --story-logo-max-w: 200px;
 
   --shadow: 0 18px 50px -20px rgba(14,16,60,.35);
   --shadow-sm: 0 8px 24px -12px rgba(14,16,60,.28);
@@ -687,6 +689,14 @@ p{margin:0}
   display:flex;flex-direction:column;gap:14px}
 .story__brand{font-size:1.05rem;color:var(--navy);letter-spacing:.01em;
   padding-bottom:12px;border-bottom:1px solid var(--gray-100)}
+/* Logo in place of the brand name. Fixed height with a width cap, like the
+   client bar; object-position keeps a capped wide logo flush left rather than
+   centred in its box. */
+/* Every card header gets the logo's height — text brands included — so in a
+   mixed set (some logos uploaded, some not) the quotes still start level. */
+.story__brand{display:flex;align-items:center;min-height:calc(var(--story-logo-h) + 12px)}
+.story__logo{display:block;height:var(--story-logo-h);width:auto;max-width:var(--story-logo-max-w);
+  object-fit:contain;object-position:left center}
 .story blockquote{margin:0;color:var(--gray-500);font-size:.98rem;line-height:1.6}
 
 /* --- FOOTER SOCIAL ---------------------------------------------------- */

@@ -244,7 +244,14 @@ function brewco_register_fields() {
 		brewco_f( 'text', 'stories_heading', 'Heading', array( 'default_value' => 'The partner these brands' ) ),
 		brewco_f( 'text', 'stories_heading_accent', 'Heading (copper part)', array( 'default_value' => 'trusted' ) ),
 		brewco_f_rep( 'stories', 'Stories', array(
-			brewco_sf( 'text', 'stories', 'brand', 'Brand' ),
+			brewco_sf( 'image', 'stories', 'logo', 'Logo', array(
+				'return_format' => 'array',
+				'preview_size'  => 'thumbnail',
+				'instructions'  => 'Replaces the brand name at the top of the card. Transparent PNG, cropped tight to the mark.',
+			) ),
+			brewco_sf( 'text', 'stories', 'brand', 'Brand', array(
+				'instructions' => 'Read to screen readers as the logo’s description. Shown as text instead if no logo is uploaded.',
+			) ),
 			brewco_sf( 'textarea', 'stories', 'text', 'Story', array( 'rows' => 4 ) ),
 		), array(
 			'button_label' => 'Add story',

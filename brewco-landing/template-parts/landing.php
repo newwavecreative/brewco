@@ -118,7 +118,7 @@ $fb_socials = array(
 );
 
 $clients = brewco_rows( 'logobar_clients', $fb_clients, array( 'name', 'logo' ) );
-$stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text' ) );
+$stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' ) );
 ?>
 <!-- SECTION 01 — NAVBAR (labels are structural, kept in the template) -->
 <header class="nav" id="nav" data-nav>
@@ -421,8 +421,20 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text' ) );
     <div class="marquee__track">
       <?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
         <?php foreach ( $stories as $st ) : ?>
+          <?php
+          $sbrand = (string) brewco_row( $st, 'brand' );
+          $slogo  = brewco_image_data( is_array( $st ) && isset( $st['logo'] ) ? $st['logo'] : null );
+          ?>
           <figure class="story"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>>
-            <h3 class="story__brand"><?php echo esc_html( brewco_row( $st, 'brand' ) ); ?></h3>
+            <?php /* With a logo, the h3's accessible name is the img alt (the
+                     brand name), so the card keeps a real heading. */ ?>
+            <h3 class="story__brand<?php echo $slogo ? ' story__brand--logo' : ''; ?>">
+              <?php if ( $slogo ) : ?>
+                <img class="story__logo" src="<?php echo $slogo['url']; ?>"<?php echo brewco_img_dims( $slogo ); ?> alt="<?php echo $pass ? '' : esc_attr( '' !== $sbrand ? $sbrand : $slogo['alt'] ); ?>" loading="lazy" decoding="async">
+              <?php else : ?>
+                <?php echo esc_html( $sbrand ); ?>
+              <?php endif; ?>
+            </h3>
             <blockquote><?php echo esc_html( brewco_row( $st, 'text' ) ); ?></blockquote>
           </figure>
         <?php endforeach; ?>
