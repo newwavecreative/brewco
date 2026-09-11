@@ -25,12 +25,46 @@ function brewco_field( $name, $fallback = '' ) {
 	return $v;
 }
 
-/** A repeater, as an array of rows. $fallback is the shipped set. */
-function brewco_rows( $name, $fallback = array() ) {
+/**
+ * A repeater, as an array of rows. $fallback is the shipped set.
+ *
+ * Blank rows are dropped, and if nothing is left the shipped set is used. A
+ * repeater saved with only an empty row (an "Add row" clicked and never
+ * filled) used to count as real content: it suppressed the fallback and drew
+ * an empty item — the Vehicles section went live as one empty pill.
+ *
+ * $content_keys names the sub-fields that make a row "real". Pass it for any
+ * repeater with a sub-field that has a default value (a select, or a text
+ * field with default_value): a freshly added row carries that default, so
+ * without the list a blank row would look filled in. With no list, any
+ * non-blank value counts.
+ */
+function brewco_rows( $name, $fallback = array(), $content_keys = array() ) {
 	if ( ! function_exists( 'get_field' ) ) { return $fallback; }
 	$v = get_field( $name );
 	if ( empty( $v ) || ! is_array( $v ) ) { return $fallback; }
-	return $v;
+	$rows = array();
+	foreach ( $v as $row ) {
+		if ( brewco_row_has_content( $row, $content_keys ) ) { $rows[] = $row; }
+	}
+	return $rows ? $rows : $fallback;
+}
+
+/** Does this repeater row carry any content in the given keys (or any key)? */
+function brewco_row_has_content( $row, $keys = array() ) {
+	if ( ! is_array( $row ) ) { return ! brewco_is_blank( $row ); }
+	$check = $keys ? array_intersect_key( $row, array_flip( $keys ) ) : $row;
+	foreach ( $check as $val ) {
+		if ( ! brewco_is_blank( $val ) ) { return true; }
+	}
+	return false;
+}
+
+/** Empty for our purposes: null, false, an empty array, or whitespace-only text. */
+function brewco_is_blank( $v ) {
+	if ( null === $v || false === $v || array() === $v ) { return true; }
+	if ( is_string( $v ) ) { return '' === trim( $v ); }
+	return false;
 }
 
 /**

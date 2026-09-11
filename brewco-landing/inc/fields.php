@@ -197,6 +197,9 @@ function brewco_register_fields() {
 		brewco_f( 'textarea', 'fleet_sub', 'Sub-line', $ta ),
 		brewco_f_rep( 'fleet_items', 'Vehicle types', array(
 			brewco_sf( 'text', 'fleet', 'label', 'Label' ),
+			brewco_sf( 'text', 'fleet', 'url', 'Link', array(
+				'instructions' => 'Where the pill goes, e.g. /vehicles/box-trucks/ — leave blank for a plain, unlinked pill.',
+			) ),
 		), array( 'layout' => 'table', 'button_label' => 'Add vehicle type' ) ),
 
 		/* --------------------------------------------------------- QUOTE */

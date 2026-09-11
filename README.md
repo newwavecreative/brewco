@@ -180,6 +180,16 @@ inject markup.
   how much is in it, so adding clients made it race; `main.js` now recomputes
   the duration from the track's width. Change the number to change the pace.
   The partner-stories marquee still uses its fixed CSS duration.
+- **Vehicle links:** each row in *Vehicles → Vehicle types* has a *Link*.
+  With a link the pill is clickable (and gets the hover lift); without one it's
+  a plain pill. The built-in list links all ten to brewco.com's
+  `/vehicles/…/` pages. The Link is a plain text field rather than ACF's URL
+  field on purpose: ACF's URL type rejects root-relative paths like
+  `/vehicles/box-trucks/`.
+- **Blank rows are ignored.** Any list (clients, services, vehicles, offices,
+  stories…) skips rows with nothing in them, and falls back to the built-in
+  content if no real rows remain — so a stray empty "Add row" can't blank out a
+  section.
 - **Service card images:** each service takes an *Image* plus an *Image fit* —
   **Fill** crops a photo to the square's edges, **Fit** keeps an icon or logo
   whole with space around it. With no image, the card falls back to its glyph.

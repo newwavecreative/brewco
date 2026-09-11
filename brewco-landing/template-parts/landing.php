@@ -72,12 +72,19 @@ $fb_services = array(
 		'icon'  => '◈',
 	),
 );
+/* URLs are brewco.com's own vehicle pages (all verified 200, 2026-09-11).
+   Root-relative, since the landing page lives on the same WordPress install. */
 $fb_fleet = array(
-	array( 'label' => 'Box Trucks' ), array( 'label' => 'Bumper Pull Trailers' ),
-	array( 'label' => 'Custom Buses' ), array( 'label' => 'Custom Containers' ),
-	array( 'label' => 'Expandable Trailers' ), array( 'label' => 'Gooseneck Trailers' ),
-	array( 'label' => 'Mobile Hospitality Trailers' ), array( 'label' => 'Mobile Kitchens' ),
-	array( 'label' => 'Mobile Stages' ), array( 'label' => 'Sprinter Vans' ),
+	array( 'label' => 'Box Trucks',                  'url' => '/vehicles/box-trucks/' ),
+	array( 'label' => 'Bumper Pull Trailers',        'url' => '/vehicles/bumper-pull-trailers/' ),
+	array( 'label' => 'Custom Buses',                'url' => '/vehicles/custom-buses/' ),
+	array( 'label' => 'Custom Containers',           'url' => '/vehicles/custom-containers/' ),
+	array( 'label' => 'Expandable Trailers',         'url' => '/vehicles/expandable-trailers/' ),
+	array( 'label' => 'Gooseneck Trailers',          'url' => '/vehicles/gooseneck-trailers/' ),
+	array( 'label' => 'Mobile Hospitality Trailers', 'url' => '/vehicles/mobile-hospitality-trailers/' ),
+	array( 'label' => 'Mobile Kitchens',             'url' => '/vehicles/mobile-kitchens/' ),
+	array( 'label' => 'Mobile Stages',               'url' => '/vehicles/mobile-stages/' ),
+	array( 'label' => 'Sprinter Vans',               'url' => '/vehicles/sprinter-vans/' ),
 );
 $fb_offices = array(
 	array( 'name' => 'Headquarters',    'city' => 'Central City, KY',    'address' => "106 Brewer Drive\nCentral City, KY 42330",              'phone' => '270-754-2264',    'phone_link' => '+12707542264' ),
@@ -110,8 +117,8 @@ $fb_socials = array(
 	array( 'label' => 'X',         'url' => 'https://twitter.com/brewcomarketing' ),
 );
 
-$clients = brewco_rows( 'logobar_clients', $fb_clients );
-$stories = brewco_rows( 'stories', $fb_stories );
+$clients = brewco_rows( 'logobar_clients', $fb_clients, array( 'name', 'logo' ) );
+$stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text' ) );
 ?>
 <!-- SECTION 01 — NAVBAR (labels are structural, kept in the template) -->
 <header class="nav" id="nav" data-nav>
@@ -248,7 +255,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
 <section class="stats">
   <div class="brewco-container">
     <div class="stats__grid">
-      <?php $i = 0; foreach ( brewco_rows( 'stats', $fb_stats ) as $stat ) : ?>
+      <?php $i = 0; foreach ( brewco_rows( 'stats', $fb_stats, array( 'label', 'value' ) ) as $stat ) : ?>
         <div class="stat" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
           <div class="stat__num"><span data-count="<?php echo esc_attr( brewco_row( $stat, 'value', 0 ) ); ?>">0</span><?php echo esc_html( brewco_row( $stat, 'suffix' ) ); ?></div>
           <div class="stat__label"><?php echo esc_html( brewco_row( $stat, 'label' ) ); ?></div>
@@ -271,7 +278,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
       <h2><?php echo brewco_heading( 'services_heading', 'Completely', 'services_heading_accent', 'integrated solutions' ); ?></h2>
     </div>
     <div class="feature-list">
-      <?php $i = 0; foreach ( brewco_rows( 'services', $fb_services ) as $svc ) : ?>
+      <?php $i = 0; foreach ( brewco_rows( 'services', $fb_services, array( 'title', 'body', 'image' ) ) as $svc ) : ?>
         <?php
         $delay = ( $i % 3 ) * 80;
         $items = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) brewco_row( $svc, 'items' ) ) ), 'strlen' );
@@ -328,8 +335,21 @@ $stories = brewco_rows( 'stories', $fb_stories );
       <p class="section-head__sub"><?php echo brewco_t( 'fleet_sub', 'Every asset below is designed, fabricated and managed by our own team — no third-party vendors between you and the build.' ); ?></p>
     </div>
     <ul class="taggrid" data-reveal>
-      <?php foreach ( brewco_rows( 'fleet_items', $fb_fleet ) as $v ) : ?>
-        <li class="tag"><?php echo esc_html( brewco_row( $v, 'label' ) ); ?></li>
+      <?php foreach ( brewco_rows( 'fleet_items', $fb_fleet, array( 'label' ) ) as $v ) : ?>
+        <?php
+        $vlabel = (string) brewco_row( $v, 'label' );
+        // Escape first, then decide: esc_url() returns '' for an unsafe or
+        // malformed URL (e.g. javascript:), which should become a plain pill
+        // rather than a link with an empty href that just reloads the page.
+        $vurl = esc_url( trim( (string) brewco_row( $v, 'url' ) ) );
+        ?>
+        <li>
+          <?php if ( '' !== $vurl ) : ?>
+            <a class="tag" href="<?php echo $vurl; ?>"><?php echo esc_html( $vlabel ); ?></a>
+          <?php else : ?>
+            <span class="tag"><?php echo esc_html( $vlabel ); ?></span>
+          <?php endif; ?>
+        </li>
       <?php endforeach; ?>
     </ul>
   </div>
@@ -350,7 +370,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
         <a href="#contact" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
       </div>
       <ul class="quotecard__locations">
-        <?php foreach ( brewco_rows( 'offices', $fb_offices ) as $o ) : ?>
+        <?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?>
           <li>
             <strong><?php echo esc_html( brewco_row( $o, 'name' ) ); ?></strong>
             <span><?php echo nl2br( esc_html( brewco_row( $o, 'address' ) ), false ); ?></span>
@@ -373,7 +393,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
       <h2><?php echo brewco_heading( 'how_heading', 'From first conversation', 'how_heading_accent', 'to the road' ); ?></h2>
     </div>
     <div class="bento">
-      <?php $i = 0; foreach ( brewco_rows( 'steps', $fb_steps ) as $step ) : ?>
+      <?php $i = 0; foreach ( brewco_rows( 'steps', $fb_steps, array( 'title', 'text' ) ) as $step ) : ?>
         <div class="bento__cell<?php echo 0 === $i ? ' bento__cell--lg' : ''; ?>" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
           <span class="bento__step"><?php echo esc_html( brewco_row( $step, 'step_label', 'Step ' . ( $i + 1 ) ) ); ?></span>
           <div class="bento__glow"></div>
@@ -428,7 +448,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
 <footer class="footer">
   <div class="brewco-container">
     <div class="footer__features" data-reveal>
-      <?php foreach ( brewco_rows( 'footer_features', $fb_ffeat ) as $f ) : ?>
+      <?php foreach ( brewco_rows( 'footer_features', $fb_ffeat, array( 'title', 'text' ) ) as $f ) : ?>
         <div class="feature">
           <span class="feature__icon"><?php echo esc_html( brewco_row( $f, 'icon', '◈' ) ); ?></span>
           <div><strong><?php echo esc_html( brewco_row( $f, 'title' ) ); ?></strong><span><?php echo esc_html( brewco_row( $f, 'text' ) ); ?></span></div>
@@ -445,7 +465,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
           <a href="<?php echo esc_url( brewco_field( 'finalcta_cta_url', '/contact/' ) ); ?>" class="pill pill--contact">✉ Contact Us</a>
         </div>
         <div class="footer__social">
-          <?php foreach ( brewco_rows( 'footer_socials', $fb_socials ) as $s ) : ?>
+          <?php foreach ( brewco_rows( 'footer_socials', $fb_socials, array( 'url' ) ) as $s ) : ?>
             <a href="<?php echo esc_url( brewco_row( $s, 'url' ) ); ?>" rel="noopener" target="_blank"><?php echo esc_html( brewco_row( $s, 'label' ) ); ?></a>
           <?php endforeach; ?>
         </div>
@@ -453,7 +473,7 @@ $stories = brewco_rows( 'stories', $fb_stories );
       <nav class="footer__nav">
         <div><h4>Company</h4><a href="#approach">Who We Are</a><a href="#services">What We Do</a><a href="#work">Our Work</a><a href="#fleet">Vehicles</a></div>
         <div><h4>Services</h4><a href="#services">Experiential Marketing</a><a href="#services">Sponsorship</a><a href="#services">Design &amp; Fabrication</a><a href="#services">Brewco Health</a></div>
-        <div><h4>Offices</h4><?php foreach ( brewco_rows( 'offices', $fb_offices ) as $o ) : ?><span><?php echo esc_html( brewco_row( $o, 'city', brewco_row( $o, 'name' ) ) ); ?></span><?php endforeach; ?></div>
+        <div><h4>Offices</h4><?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?><span><?php echo esc_html( brewco_row( $o, 'city', brewco_row( $o, 'name' ) ) ); ?></span><?php endforeach; ?></div>
       </nav>
     </div>
 
