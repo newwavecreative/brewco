@@ -44,6 +44,9 @@
   --steel:     #5A6B8C;   /* muted blue-gray */
   --accent:    #C6613F;   /* two-tone heading accent */
   --ink:       #333333;   /* brewco.com body text */
+  --slate:     #333D5F;   /* Services band background */
+  --accent-on-dark: #E08A63; /* copper lightened for dark grounds — the base
+                               --accent is only 2.6:1 on --slate; this is 4.05:1 */
   --white:     #ffffff;
   --gray-50:   #f7f7f7;
   --gray-100:  #f2f2f2;
@@ -266,7 +269,14 @@ p{margin:0}
 .flip__back strong{color:var(--cta)}
 
 /* Feature cards — large stacked rows (text + big icon, alternating side) */
-.features{position:relative;overflow:hidden;padding-block:clamp(64px,9vw,120px);background:var(--gray-50)}
+.features{position:relative;overflow:hidden;padding-block:clamp(64px,9vw,120px);background:var(--slate)}
+/* The band is dark, so flip only what sits directly on it. The service cards
+   are white, so their contents keep the default dark styles — which is why this
+   targets the section head and watermark rather than setting .features{color}. */
+.features .section-head h2{color:var(--white)}
+.features .section-head .text-accent{color:var(--accent-on-dark)}
+.features .section-head .eyebrow{color:rgba(255,255,255,.72)}
+.features .section-watermark{color:var(--white)}
 .features>.brewco-container{position:relative;z-index:1}
 .feature-list{display:grid;gap:22px;max-width:980px;margin-inline:auto}
 .featurecard{display:grid;grid-template-columns:1fr 220px;gap:clamp(24px,4vw,48px);align-items:center;
