@@ -102,8 +102,15 @@ function brewco_register_fields() {
 		/* ------------------------------------------------------ LOGO BAR */
 		brewco_f_tab( 'Client bar' ),
 		brewco_f( 'text', 'logobar_label', 'Label', array( 'default_value' => 'Trusted by the brands we build for' ) ),
-		brewco_f_rep( 'logobar_clients', 'Client names', array(
-			brewco_sf( 'text', 'logobar', 'name', 'Name' ),
+		brewco_f_rep( 'logobar_clients', 'Clients', array(
+			brewco_sf( 'image', 'logobar', 'logo', 'Logo', array(
+				'return_format' => 'array',
+				'preview_size'  => 'thumbnail',
+				'instructions'  => 'PNG with a transparent background works best. WordPress blocks SVG uploads unless an SVG plugin is installed.',
+			) ),
+			brewco_sf( 'text', 'logobar', 'name', 'Name', array(
+				'instructions' => 'Read aloud to screen readers as the logo’s description. Shown as text instead if no logo is uploaded.',
+			) ),
 		), array( 'layout' => 'table', 'button_label' => 'Add client' ) ),
 
 		/* --------------------------------------------------- WHO WE ARE */
@@ -152,8 +159,21 @@ function brewco_register_fields() {
 				'rows'         => 3,
 				'instructions' => 'One item per line. Leave blank for no list.',
 			) ),
-			brewco_sf( 'text', 'services', 'icon', 'Icon glyph', array(
-				'instructions' => 'A single character, e.g. ◇ △ ○ ✚ ▤ ◈',
+			brewco_sf( 'image', 'services', 'image', 'Image', array(
+				'return_format' => 'array',
+				'preview_size'  => 'thumbnail',
+				'instructions'  => 'Shown in the square beside the text. Square images crop least.',
+			) ),
+			brewco_sf( 'select', 'services', 'image_fit', 'Image fit', array(
+				'choices'       => array(
+					'fill' => 'Fill the square (photos)',
+					'fit'  => 'Fit inside the square (icons, logos)',
+				),
+				'default_value' => 'fill',
+				'instructions'  => 'Fill crops to the edges. Fit shows the whole image with space around it.',
+			) ),
+			brewco_sf( 'text', 'services', 'icon', 'Icon glyph (no image)', array(
+				'instructions' => 'Only shown if no image is uploaded. A single character, e.g. ◇ △ ○ ✚ ▤ ◈',
 				'maxlength'    => 2,
 			) ),
 		), array( 'button_label' => 'Add service' ) ),

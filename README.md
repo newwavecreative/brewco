@@ -163,6 +163,23 @@ inject markup.
   legible over bright photography. Set `--hero-nav-scrim` to `0` to drop it.
   Raise the scrim values if a bright image makes the headline hard to read;
   lower them to show more of the photo.
+- **Client logo bar:** each row in *Client bar → Clients* takes a logo and a
+  name. The name is the logo's alt text, and is shown as text instead when no
+  logo is uploaded — so logos can be added one at a time. Logos share one height
+  (`--logo-h`) with a width cap (`--logo-max-w`); horizontal logos read best,
+  and a tall stacked logo will come out narrow. Upload at roughly twice the
+  display height (~90px+) so they stay sharp on high-density screens. Full
+  colour by default; `--logo-filter: grayscale(1)` + `--logo-opacity: .6` gives
+  a muted strip that colours on hover. WordPress blocks SVG uploads without an
+  SVG plugin — use transparent PNGs.
+- **Marquee speed:** the client bar scrolls at a *constant* 66 px/s
+  (`data-speed="66"` in the markup). A CSS marquee's speed otherwise depends on
+  how much is in it, so adding clients made it race; `main.js` now recomputes
+  the duration from the track's width. Change the number to change the pace.
+  The partner-stories marquee still uses its fixed CSS duration.
+- **Service card images:** each service takes an *Image* plus an *Image fit* —
+  **Fill** crops a photo to the square's edges, **Fit** keeps an icon or logo
+  whole with space around it. With no image, the card falls back to its glyph.
 - **Hero slideshow:** add two or more images to the *Hero → Background
   slideshow* gallery field and they cross-fade; one image just sits still.
   *Seconds per slide* sets the interval, `--hero-fade` the fade length. It

@@ -72,6 +72,16 @@
   --hero-nav-scrim-h: 190px;
   --hero-fade:      1200ms;   /* slideshow crossfade */
 
+  /* Client logo bar. Logos arrive in every shape, so they share one height and
+     a width cap. Full colour by default — recognisability was the point of
+     switching to logos. For a quieter, uniform strip set --logo-filter to
+     grayscale(1) and --logo-opacity to .6 (hover restores colour). */
+  --logo-h:        44px;
+  --logo-max-w:   170px;
+  --logo-gap:      56px;
+  --logo-filter:   none;
+  --logo-opacity:  1;
+
   --shadow: 0 18px 50px -20px rgba(14,16,60,.35);
   --shadow-sm: 0 8px 24px -12px rgba(14,16,60,.28);
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -207,6 +217,11 @@ p{margin:0}
 .logobar__label{text-align:center;color:var(--gray-500);font-weight:600;margin-bottom:26px}
 .logobar__logo{font-family:var(--font-head);font-weight:400;font-size:1.4rem;color:var(--gray-200);
   letter-spacing:.04em;padding-inline:34px;white-space:nowrap}
+.logobar__item{display:flex;align-items:center;justify-content:center;flex:none;
+  padding-inline:calc(var(--logo-gap) / 2);height:calc(var(--logo-h) + 12px)}
+.logobar__img{display:block;height:var(--logo-h);width:auto;max-width:var(--logo-max-w);object-fit:contain;
+  filter:var(--logo-filter);opacity:var(--logo-opacity);transition:filter .3s var(--ease),opacity .3s var(--ease)}
+.logobar__item:hover .logobar__img{filter:none;opacity:1}
 
 /* generic marquee */
 .marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
@@ -264,6 +279,13 @@ p{margin:0}
 .featurecard__body .checklist{margin:0}
 .featurecard__icon{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;font-size:4.5rem;color:var(--cta);
   background:linear-gradient(160deg,#fff,var(--gray-100));border:1px solid var(--gray-100)}
+/* Uploaded image in the square. "fill" crops a photo to the edges; "fit" keeps
+   an icon or logo whole, with padding, on the same soft gradient. */
+.featurecard__icon--img{overflow:hidden;padding:0}
+.featurecard__icon--img img{display:block;width:100%;height:100%}
+.featurecard__icon--fill{background:var(--gray-100)}
+.featurecard__icon--fill img{object-fit:cover}
+.featurecard__icon--fit img{object-fit:contain;padding:14%}
 
 /* =============================================================
    07 — STATS

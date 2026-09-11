@@ -183,11 +183,23 @@ $stories = brewco_rows( 'stories', $fb_stories );
 <section class="logobar" id="work">
   <div class="brewco-container">
     <p class="logobar__label" data-reveal><?php echo brewco_t( 'logobar_label', 'Trusted by the brands we build for' ); ?></p>
-    <div class="marquee" data-marquee>
+    <?php /* data-speed = constant scroll rate in px/s, so the pace is the same
+             however many clients are listed (main.js sets the duration). */ ?>
+    <div class="marquee" data-marquee data-speed="66">
       <div class="marquee__track">
         <?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
           <?php foreach ( $clients as $c ) : ?>
-            <span class="logobar__logo"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>><?php echo esc_html( brewco_row( $c, 'name' ) ); ?></span>
+            <?php
+            $cname = (string) brewco_row( $c, 'name' );
+            $clogo = brewco_image_data( is_array( $c ) && isset( $c['logo'] ) ? $c['logo'] : null );
+            ?>
+            <?php if ( $clogo ) : ?>
+              <?php /* The second pass is a visual duplicate for the loop: hidden
+                       from screen readers, so each logo is announced once. */ ?>
+              <span class="logobar__item"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>><img class="logobar__img" src="<?php echo $clogo['url']; ?>"<?php echo brewco_img_dims( $clogo ); ?> alt="<?php echo $pass ? '' : esc_attr( '' !== $cname ? $cname : $clogo['alt'] ); ?>" loading="lazy" decoding="async"></span>
+            <?php elseif ( '' !== $cname ) : ?>
+              <span class="logobar__logo"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>><?php echo esc_html( $cname ); ?></span>
+            <?php endif; ?>
           <?php endforeach; ?>
         <?php endfor; ?>
       </div>
@@ -276,7 +288,15 @@ $stories = brewco_rows( 'stories', $fb_stories );
               </ul>
             <?php endif; ?>
           </div>
-          <div class="featurecard__icon" aria-hidden="true"><?php echo esc_html( brewco_row( $svc, 'icon', '◇' ) ); ?></div>
+          <?php $simg = brewco_image_data( is_array( $svc ) && isset( $svc['image'] ) ? $svc['image'] : null ); ?>
+          <?php if ( $simg ) : ?>
+            <?php $sfit = 'fit' === brewco_row( $svc, 'image_fit', 'fill' ) ? 'fit' : 'fill'; ?>
+            <div class="featurecard__icon featurecard__icon--img featurecard__icon--<?php echo $sfit; ?>">
+              <img src="<?php echo $simg['url']; ?>"<?php echo brewco_img_dims( $simg ); ?> alt="<?php echo esc_attr( $simg['alt'] ); ?>" loading="lazy" decoding="async">
+            </div>
+          <?php else : ?>
+            <div class="featurecard__icon" aria-hidden="true"><?php echo esc_html( brewco_row( $svc, 'icon', '◇' ) ); ?></div>
+          <?php endif; ?>
         </article>
       <?php $i++; endforeach; ?>
     </div>

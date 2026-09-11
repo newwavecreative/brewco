@@ -75,6 +75,49 @@ function brewco_gallery_urls( $name ) {
 	return $out;
 }
 
+/**
+ * Normalise an image VALUE (not a field name) — e.g. a repeater sub-field — to
+ * array( url, width, height, alt ), or null when there is no usable image.
+ *
+ * ACF hands back an attachment array, a bare ID or a URL depending on the
+ * field's return format, and `false` for an empty image. Width/height are
+ * returned so the markup can reserve the image's space before it loads: that
+ * avoids layout shift, and it keeps the logo marquee's measured width correct
+ * from the first frame.
+ */
+function brewco_image_data( $v ) {
+	if ( is_array( $v ) && ! empty( $v['url'] ) ) {
+		return array(
+			'url'    => esc_url( $v['url'] ),
+			'width'  => isset( $v['width'] ) ? (int) $v['width'] : 0,
+			'height' => isset( $v['height'] ) ? (int) $v['height'] : 0,
+			'alt'    => isset( $v['alt'] ) ? (string) $v['alt'] : '',
+		);
+	}
+	if ( is_numeric( $v ) && (int) $v > 0 ) {
+		$src = wp_get_attachment_image_src( (int) $v, 'full' );
+		if ( $src ) {
+			return array(
+				'url'    => esc_url( $src[0] ),
+				'width'  => (int) $src[1],
+				'height' => (int) $src[2],
+				'alt'    => (string) get_post_meta( (int) $v, '_wp_attachment_image_alt', true ),
+			);
+		}
+		return null;
+	}
+	if ( is_string( $v ) && '' !== $v ) {
+		return array( 'url' => esc_url( $v ), 'width' => 0, 'height' => 0, 'alt' => '' );
+	}
+	return null;
+}
+
+/** width="" height="" attributes, or nothing when dimensions are unknown. */
+function brewco_img_dims( $img ) {
+	if ( empty( $img['width'] ) || empty( $img['height'] ) ) { return ''; }
+	return ' width="' . (int) $img['width'] . '" height="' . (int) $img['height'] . '"';
+}
+
 /** Escaped text. */
 function brewco_t( $name, $fallback = '' ) {
 	return esc_html( brewco_field( $name, $fallback ) );

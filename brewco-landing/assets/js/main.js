@@ -105,6 +105,38 @@
     applyParallax();
   }
 
+  /* ---------- 3b. Constant-speed marquees ----------
+     A CSS marquee has a fixed duration, so its SPEED depends on how much is in
+     it — adding clients made the logo bar race. Any .marquee[data-speed] (px/s)
+     gets its duration recomputed from the track's width instead, so the pace
+     holds steady however many items the page has. A ResizeObserver re-fits it
+     when the web font or the logos finish loading and change the width.
+     Marquees without data-speed keep their CSS duration untouched. */
+  var speedMarquees = Array.prototype.slice.call(document.querySelectorAll('.marquee[data-speed]'));
+  if (speedMarquees.length && !reduce) {
+    speedMarquees.forEach(function (mq) {
+      var track = mq.querySelector('.marquee__track');
+      var speed = parseFloat(mq.getAttribute('data-speed'));
+      if (!track || !isFinite(speed) || speed <= 0) { return; }
+      var lastLoop = 0;
+      var fit = function () {
+        // The track holds two identical sets and animates by -50%,
+        // so one loop travels half its width.
+        var loop = track.offsetWidth / 2;
+        if (!loop || Math.abs(loop - lastLoop) < 1) { return; }
+        lastLoop = loop;
+        track.style.animationDuration = (loop / speed).toFixed(2) + 's';
+      };
+      fit();
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(function () { window.requestAnimationFrame(fit); }).observe(track);
+      } else {
+        window.addEventListener('load', fit);
+        window.addEventListener('resize', fit);
+      }
+    });
+  }
+
   /* ---------- 4a. Hero background slideshow ----------
      Cross-fades the stacked .hero__slide images. Only runs with 2+ slides, so a
      single-image hero is untouched. Under reduced-motion it holds slide 1.
