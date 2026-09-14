@@ -281,10 +281,11 @@ p{margin:0}
 .features .section-watermark{color:var(--white)}
 .features>.brewco-container{position:relative;z-index:1}
 .feature-list{display:grid;gap:22px;max-width:980px;margin-inline:auto}
-/* overflow:hidden clips the scroll-driven image slide to the card, so an image
-   entering from its outer edge is revealed by the card rather than floating
-   over the section. */
-.featurecard{display:grid;grid-template-columns:1fr 220px;gap:clamp(24px,4vw,48px);align-items:center;overflow:hidden;
+/* No overflow:hidden here: on wide screens the images break out past the card's
+   outer edge (see "Bigger images" below), so the scroll-driven slide is visible
+   outside the card too. .features{overflow:hidden} still keeps it from widening
+   the page. */
+.featurecard{--svc-img:330px;display:grid;grid-template-columns:1fr 220px;gap:clamp(24px,4vw,48px);align-items:center;
   background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius);box-shadow:var(--shadow-sm);
   padding:clamp(26px,4vw,44px);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .featurecard:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
@@ -307,6 +308,23 @@ p{margin:0}
    enters from the side it sits on (the cards alternate). No JS, or reduced
    motion, leaves it untransformed at its resting position. */
 .featurecard__icon--img[data-slide-in]{will-change:transform}
+/* Bigger images: 330px (--svc-img), up from 220px. From 1181px, the first width
+   with ~100px of section beside the 980px card, an uploaded image keeps its
+   220px column (so the text doesn't reflow) and grows outward past the card
+   edge instead: 110px wider, less the card's 45px padding + border, is a 65px
+   overhang. From 901-1180px there isn't room beside the card, so the column
+   grows to hold the image inside it. Under 901px the stacked layout's 140px
+   image is unchanged. */
+@media (min-width:901px){
+  .featurecard{grid-template-columns:1fr var(--svc-img)}
+  .featurecard:nth-child(even){grid-template-columns:var(--svc-img) 1fr}
+}
+@media (min-width:1181px){
+  .featurecard{grid-template-columns:1fr 220px}
+  .featurecard:nth-child(even){grid-template-columns:220px 1fr}
+  .featurecard__icon--img{width:var(--svc-img);margin-right:calc(220px - var(--svc-img));box-shadow:var(--shadow)}
+  .featurecard:nth-child(even) .featurecard__icon--img{margin-right:0;margin-left:calc(220px - var(--svc-img))}
+}
 
 /* =============================================================
    07 — STATS

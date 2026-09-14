@@ -184,9 +184,10 @@ inject markup.
   on as the card scrolls up (the cards alternate, so odd cards enter from the
   right, even from the left). It is scroll-linked, not a one-shot animation:
   `SLIDE_PX` in `main.js` sets the distance, the `0.35` beside it the pace. The
-  cards clip it (`overflow:hidden`), so an image is revealed by the card edge
-  instead of floating over the section. Off below 821px, where the layout
-  stacks and images are centred, and off under `prefers-reduced-motion`.
+  cards don't clip it (the images overlap the card edge on wide screens, see
+  below), so it's visible outside the card; the section still clips it at the
+  page edge. Off below 821px, where the layout stacks and images are centred,
+  and off under `prefers-reduced-motion`.
 - **Partner-story logos:** each story in *Partner stories → Stories* takes a
   logo, which replaces the brand name at the top of the card. The brand name
   becomes the logo's alt text, and still shows as text when no logo is
@@ -205,6 +206,10 @@ inject markup.
 - **Service card images:** each service takes an *Image* plus an *Image fit* —
   **Fill** crops a photo to the square's edges, **Fit** keeps an icon or logo
   whole with space around it. With no image, the card falls back to its glyph.
+  Images are 330px squares (`--svc-img` in `styles.css`). From 1181px wide they
+  break out past the card's outer edge by 65px, with a shadow, while the text
+  column stays put; from 901–1180px the image column grows to fit them inside
+  the card instead.
 - **Hero slideshow:** add two or more images to the *Hero → Background
   slideshow* gallery field and they cross-fade; one image just sits still.
   *Seconds per slide* sets the interval, `--hero-fade` the fade length. It
