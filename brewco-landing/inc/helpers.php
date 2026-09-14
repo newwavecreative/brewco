@@ -110,6 +110,21 @@ function brewco_gallery_urls( $name ) {
 }
 
 /**
+ * A file field's URL (e.g. the hero video), or '' when unset. As with images,
+ * ACF returns an array, an attachment ID or a URL depending on return format.
+ */
+function brewco_file_url( $name ) {
+	$v = function_exists( 'get_field' ) ? get_field( $name ) : null;
+	if ( is_array( $v ) && ! empty( $v['url'] ) ) { return esc_url( $v['url'] ); }
+	if ( is_numeric( $v ) && (int) $v > 0 ) {
+		$src = wp_get_attachment_url( (int) $v );
+		return $src ? esc_url( $src ) : '';
+	}
+	if ( is_string( $v ) && '' !== $v ) { return esc_url( $v ); }
+	return '';
+}
+
+/**
  * Normalise an image VALUE (not a field name) — e.g. a repeater sub-field — to
  * array( url, width, height, alt ), or null when there is no usable image.
  *

@@ -98,6 +98,14 @@ function brewco_register_fields() {
 		brewco_f( 'image', 'hero_image', 'Background image (fallback)', array_merge( $img, array(
 			'instructions' => 'Only used if the slideshow above is empty.',
 		) ) ),
+		brewco_f( 'file', 'hero_video', 'Background video', array(
+			'return_format' => 'array',
+			'mime_types'    => 'mp4',
+			'instructions'  => 'Optional. An MP4 here plays silently on a loop in place of the slideshow; remove it to bring the slideshow back. Keep it short and light — under 15 MB, 720p or 1080p. Sound in the file is never played.',
+		) ),
+		brewco_f( 'image', 'hero_video_poster', 'Video still (optional)', array_merge( $img, array(
+			'instructions' => 'Shown while the video loads, if a phone blocks autoplay, and instead of the video for visitors who have reduced motion turned on. Leave empty to use the first slideshow image. A frame from the video avoids a jump when it starts.',
+		) ) ),
 
 		/* ------------------------------------------------------ LOGO BAR */
 		brewco_f_tab( 'Client bar' ),

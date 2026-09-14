@@ -580,7 +580,7 @@ p{margin:0}
 .flipcards .brewco-container,.testimonials .brewco-container{position:relative;z-index:1}
 
 /* HERO — parallax background + gentle zoom (driven by JS), scroll cue */
-.hero__bg img{will-change:transform;transform-origin:center}
+.hero__bg img,.hero__bg video{will-change:transform;transform-origin:center}
 .hero__cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:1;
   width:26px;height:42px;border:2px solid rgba(255,255,255,.5);border-radius:14px;display:grid;justify-items:center}
 .hero__cue::before{content:"";width:4px;height:8px;margin-top:7px;border-radius:2px;
@@ -649,7 +649,7 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){
   [data-reveal]{opacity:1;transform:none;filter:none;transition:none}
   .marquee__track,.hero__cue::before{animation:none}
-  .hero__bg img{transform:none !important}
+  .hero__bg img,.hero__bg video{transform:none !important}
   .featurecard__icon--img[data-slide-in]{transform:none !important}
   *{scroll-behavior:auto}
 }

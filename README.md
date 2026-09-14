@@ -211,6 +211,18 @@ inject markup.
   pauses while the browser tab is hidden and holds on the first slide under
   `prefers-reduced-motion`. The single *Background image (fallback)* field is
   only used when the gallery is empty.
+- **Hero background video:** an MP4 in *Hero → Background video* plays
+  silently on a loop in place of the slideshow; remove it to get the slideshow
+  back. It is a plain `<video>` on a Media Library file, not a Vimeo embed, so
+  there's no player to load and it starts as soon as the first part of the file
+  arrives. Keep files under ~15 MB at 720p–1080p, exported with the index at
+  the front ("fast start" — most exports do this; check with `ffprobe` or an
+  atom viewer if a video waits to fully download before playing). *Video still*
+  shows while it loads, when a phone blocks autoplay (e.g. iPhone Low Power
+  Mode), and instead of the video under `prefers-reduced-motion` — the
+  `<source>` only matches with reduced motion off, so current browsers don't
+  request the file at all (`main.js` resets to the still in any that ignore
+  that). Leave it empty to use the first slideshow image.
 
 Asset URLs auto cache-bust on deploy (the plugin versions them with `filemtime`),
 so changes show up on a normal refresh.

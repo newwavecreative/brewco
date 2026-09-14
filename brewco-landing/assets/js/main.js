@@ -64,10 +64,19 @@
   var heroMedia = Array.prototype.slice.call(document.querySelectorAll('.hero__bg video, .hero__bg img'));
   var slideEls = Array.prototype.slice.call(document.querySelectorAll('[data-slide-in]'));
   var SLIDE_PX = 120;   // how far a service image travels before settling
-  // Reduced-motion: hold the hero video on its poster frame instead of looping.
+  // Reduced-motion: show the hero video's still instead of looping it. The
+  // <source> carries media="(prefers-reduced-motion: no-preference)", so current
+  // browsers never request the file; this is the backstop for ones that ignore
+  // that attribute. Pausing alone would leave a mid-clip frame, so load() (with
+  // preload="none") resets it to the poster.
   if (reduce) {
     var hv = document.querySelector('.hero__bg video');
-    if (hv) { hv.removeAttribute('autoplay'); hv.pause && hv.pause(); }
+    if (hv) {
+      hv.removeAttribute('autoplay');
+      hv.pause();
+      hv.preload = 'none';
+      hv.load();
+    }
   }
   if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length || slideEls.length)) {
     var ticking = false;

@@ -160,14 +160,36 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
       $hero_slides = array( brewco_image_url( 'hero_image', 'img/placeholder.svg' ) );
   }
   $hero_secs = (float) brewco_field( 'hero_slide_seconds', 6 );
+
+  /* A background video, when set, replaces the slideshow. It is a plain <video>
+     on a Media Library MP4 rather than a Vimeo/YouTube embed: no player to boot,
+     so it starts as soon as the first part of the file arrives. The still is the
+     chosen poster, else the first slide. The <source> only matches with reduced
+     motion off, so those visitors get the still and never request the file;
+     main.js backs this up for browsers that ignore `media` on <source>. */
+  $hero_video  = brewco_file_url( 'hero_video' );
+  $hero_poster = '';
+  if ( $hero_video ) {
+      $poster      = brewco_image_data( brewco_field( 'hero_video_poster', null ) );
+      $hero_poster = $poster ? $poster['url'] : $hero_slides[0];
+  }
   ?>
   <div class="hero__bg" data-slide-seconds="<?php echo esc_attr( $hero_secs ); ?>">
-    <?php foreach ( $hero_slides as $i => $slide_url ) : ?>
-      <img class="hero__slide<?php echo 0 === $i ? ' is-active' : ''; ?>"
-           src="<?php echo $slide_url; /* already escaped by the helper */ ?>"
-           alt="" aria-hidden="true"
-           <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'; ?>>
-    <?php endforeach; ?>
+    <?php if ( $hero_video ) : ?>
+      <video class="hero__video" autoplay muted loop playsinline preload="auto"
+             poster="<?php echo $hero_poster; /* already escaped by the helper */ ?>"
+             aria-hidden="true" tabindex="-1" disablepictureinpicture>
+        <source src="<?php echo $hero_video; /* already escaped by the helper */ ?>" type="video/mp4"
+                media="(prefers-reduced-motion: no-preference)">
+      </video>
+    <?php else : ?>
+      <?php foreach ( $hero_slides as $i => $slide_url ) : ?>
+        <img class="hero__slide<?php echo 0 === $i ? ' is-active' : ''; ?>"
+             src="<?php echo $slide_url; /* already escaped by the helper */ ?>"
+             alt="" aria-hidden="true"
+             <?php echo 0 === $i ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'; ?>>
+      <?php endforeach; ?>
+    <?php endif; ?>
     <div class="hero__overlay"></div>
   </div>
   <div class="brewco-container hero__grid">
