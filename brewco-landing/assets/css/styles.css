@@ -297,10 +297,13 @@ p{margin:0}
 .featurecard__icon{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;font-size:4.5rem;color:var(--cta);
   background:linear-gradient(160deg,#fff,var(--gray-100));border:1px solid var(--gray-100)}
 /* Uploaded image in the square. "fill" crops a photo to the edges; "fit" keeps
-   an icon or logo whole, with padding, on the same soft gradient. */
-.featurecard__icon--img{overflow:hidden;padding:0}
+   an icon or logo whole, with padding, on the same soft gradient. No border
+   and no light fill behind a photo: with the images overlapping the dark
+   section, the 1px border inset the photo and showed as a white rim, and a
+   light fill bleeds through the anti-aliased rounded corners. */
+.featurecard__icon--img{overflow:hidden;padding:0;border:0}
 .featurecard__icon--img img{display:block;width:100%;height:100%}
-.featurecard__icon--fill{background:var(--gray-100)}
+.featurecard__icon--fill{background:transparent}
 .featurecard__icon--fill img{object-fit:cover}
 .featurecard__icon--fit img{object-fit:contain;padding:14%}
 /* Scroll-driven slide. main.js sets the transform from the card's progress
