@@ -131,7 +131,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
     <nav class="nav__links" aria-label="Primary">
       <a href="#approach">Who We Are</a>
       <a href="#services">What We Do</a>
-      <a href="#work">Our Work</a>
+      <a href="#our-work">Our Work</a>
       <a href="#fleet">Vehicles</a>
     </nav>
     <a href="#contact" class="btn btn--cta nav__cta"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
@@ -142,7 +142,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
   <div class="nav__mobile" data-mobile-menu>
     <a href="#approach">Who We Are</a>
     <a href="#services">What We Do</a>
-    <a href="#work">Our Work</a>
+    <a href="#our-work">Our Work</a>
     <a href="#fleet">Vehicles</a>
     <a href="#contact" class="btn btn--cta"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
   </div>
@@ -434,7 +434,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
      invented quotes attributed to named people are not an option. These are
      brewco.com's own words from "Who We Are". The track is emitted twice for the
      seamless loop, so each story is authored once. -->
-<section class="stories">
+<section class="stories" id="our-work">
   <div class="brewco-container">
     <div class="section-head" data-reveal>
       <span class="eyebrow"><?php echo brewco_t( 'stories_eyebrow', 'Our Work' ); ?></span>
@@ -507,7 +507,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
         </div>
       </div>
       <nav class="footer__nav">
-        <div><h4>Company</h4><a href="#approach">Who We Are</a><a href="#services">What We Do</a><a href="#work">Our Work</a><a href="#fleet">Vehicles</a></div>
+        <div><h4>Company</h4><a href="#approach">Who We Are</a><a href="#services">What We Do</a><a href="#our-work">Our Work</a><a href="#fleet">Vehicles</a></div>
         <div><h4>Services</h4><a href="#services">Experiential Marketing</a><a href="#services">Sponsorship</a><a href="#services">Design &amp; Fabrication</a><a href="#services">Brewco Health</a></div>
         <div><h4>Offices</h4><?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?><span><?php echo esc_html( brewco_row( $o, 'city', brewco_row( $o, 'name' ) ) ); ?></span><?php endforeach; ?></div>
       </nav>
