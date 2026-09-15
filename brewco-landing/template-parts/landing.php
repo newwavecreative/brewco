@@ -1,12 +1,13 @@
 <?php
 /**
  * Landing page markup. Section order started from the reference (quad.medvi.org),
- * with Services moved up to follow the statement:
+ * with Services moved up to follow the statement, How It Works and the closing
+ * CTA removed, and the quote section moved last as the page's call to action:
  *   nav · hero · logos · statement · services · integrated · stats ·
- *   photo CTA · fleet · quote · process · partner stories · CTA · footer
+ *   photo CTA · fleet · partner stories · quote · footer
  *
  * Included by templates/landing-template.php, which defines $A = plugin assets base URL.
- * Animation hooks: data-reveal | data-reveal-delay | data-parallax | data-rotate | data-count | data-flip
+ * Animation hooks: data-reveal | data-reveal-delay | data-parallax | data-scroll-zoom | data-rotate | data-count | data-flip
  *
  * CONTENT: driven by the ACF field group in inc/fields.php, via the accessors in
  * inc/helpers.php. Every getter carries the shipped copy as its fallback, so an
@@ -92,11 +93,6 @@ $fb_offices = array(
 	array( 'name' => 'Nashville, TN',   'city' => 'Nashville, TN',   'address' => "1 Vantage Way\nNashville, TN 37228",                    'phone' => '615-496-5264',    'phone_link' => '+16154965264' ),
 	array( 'name' => 'Charlotte, NC',   'city' => 'Charlotte, NC',   'address' => "4107 Rose Lake Drive, Suite G\nCharlotte, NC 28217",    'phone' => '980-201-9048',    'phone_link' => '+19802019048' ),
 	array( 'name' => 'London, England', 'city' => 'London, England', 'address' => "16 Great Queen Street\nCovent Garden, London WC2B 5AH", 'phone' => '+44 203 600 1025', 'phone_link' => '+442036001025' ),
-);
-$fb_steps = array(
-	array( 'step_label' => 'Step 1', 'title' => 'Consult',            'text' => 'We start with a no-cost consultation: your goals, your audience, and where the program needs to go. Our team scopes the asset and the tour around that.' ),
-	array( 'step_label' => 'Step 2', 'title' => 'Design & Fabricate', 'text' => 'Our in-house designers, fabricators, electricians and HVAC experts build the asset under one roof.' ),
-	array( 'step_label' => 'Step 3', 'title' => 'Tour & Manage',      'text' => 'We manage the program on the road — staffing, logistics, maintenance and storage.' ),
 );
 $fb_stories = array(
 	array( 'brand' => 'IBM',                                   'text' => 'Fabricated and managed a mobile Cyber Tactical Operations Center and launched a tour in the United States. All assets were subsequently shipped to Europe for an ongoing mobile tour consisting of 3 assets and a large touring staff.' ),
@@ -337,7 +333,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
 <!-- SECTION 08 — PHOTO CTA -->
 <section class="photocta">
   <div class="photocta__bg" data-parallax="0.08">
-    <img src="<?php echo brewco_image_url( 'photocta_image', 'img/placeholder.svg' ); ?>" alt="" aria-hidden="true">
+    <img src="<?php echo brewco_image_url( 'photocta_image', 'img/placeholder.svg' ); ?>" alt="" aria-hidden="true" data-scroll-zoom>
     <div class="photocta__overlay"></div>
   </div>
   <div class="brewco-container photocta__content" data-reveal>
@@ -379,57 +375,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
   </div>
 </section>
 
-<!-- SECTION 10 — QUOTE / CONTACT
-     Replaces the template's $114/mo pricing card; Brewco quotes to spec. -->
-<section class="quote" id="quote">
-  <div class="brewco-container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow"><?php echo brewco_t( 'quote_eyebrow', 'Get Started' ); ?></span>
-      <h2><?php echo brewco_heading( 'quote_heading', 'Every project is', 'quote_heading_accent', 'quoted to spec' ); ?></h2>
-    </div>
-    <div class="quotecard" data-reveal>
-      <div class="quotecard__lead">
-        <h3><?php echo brewco_t( 'quote_lead_heading', 'Contact us for a no-cost consultation.' ); ?></h3>
-        <p><?php echo brewco_t( 'quote_lead_text', 'Tell us what you are trying to accomplish and where you need to be. We will scope the asset, the build and the tour, and come back with a custom quote.' ); ?></p>
-        <a href="#contact" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
-      </div>
-      <ul class="quotecard__locations">
-        <?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?>
-          <li>
-            <strong><?php echo esc_html( brewco_row( $o, 'name' ) ); ?></strong>
-            <span><?php echo nl2br( esc_html( brewco_row( $o, 'address' ) ), false ); ?></span>
-            <?php $tel = brewco_row( $o, 'phone_link' ); $ph = brewco_row( $o, 'phone' ); ?>
-            <?php if ( $ph ) : ?>
-              <a href="tel:<?php echo esc_attr( $tel ? $tel : preg_replace( '/[^0-9+]/', '', $ph ) ); ?>"><?php echo esc_html( $ph ); ?></a>
-            <?php endif; ?>
-          </li>
-        <?php endforeach; ?>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 11 — HOW IT WORKS -->
-<section class="how" id="how">
-  <div class="brewco-container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow"><?php echo brewco_t( 'how_eyebrow', 'How It Works' ); ?></span>
-      <h2><?php echo brewco_heading( 'how_heading', 'From first conversation', 'how_heading_accent', 'to the road' ); ?></h2>
-    </div>
-    <div class="bento">
-      <?php $i = 0; foreach ( brewco_rows( 'steps', $fb_steps, array( 'title', 'text' ) ) as $step ) : ?>
-        <div class="bento__cell<?php echo 0 === $i ? ' bento__cell--lg' : ''; ?>" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
-          <span class="bento__step"><?php echo esc_html( brewco_row( $step, 'step_label', 'Step ' . ( $i + 1 ) ) ); ?></span>
-          <div class="bento__glow"></div>
-          <h3><?php echo esc_html( brewco_row( $step, 'title' ) ); ?></h3>
-          <p><?php echo esc_html( brewco_row( $step, 'text' ) ); ?></p>
-        </div>
-      <?php $i++; endforeach; ?>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 12 — PARTNER STORIES (marquee)
+<!-- SECTION 10 — PARTNER STORIES (marquee)
      Replaces the template's testimonial marquee — no real testimonials exist and
      invented quotes attributed to named people are not an option. These are
      brewco.com's own words from "Who We Are". The track is emitted twice for the
@@ -467,20 +413,44 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
   </div>
 </section>
 
-</main>
-
-<!-- SECTION 13 — FINAL CTA -->
-<section class="finalcta" id="contact">
-  <div class="brewco-container finalcta__inner" data-reveal>
-    <h2><?php echo brewco_heading( 'finalcta_heading', 'Let’s', 'finalcta_heading_accent', 'get started' ); ?>.</h2>
-    <p><?php echo brewco_t( 'finalcta_text', 'Contact us for a no-cost consultation.' ); ?></p>
-    <!-- CONFIRM: the default link is /contact/ — set the Button link field if the
-         final URL differs. -->
-    <a href="<?php echo esc_url( brewco_field( 'finalcta_cta_url', '/contact/' ) ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'finalcta_cta_label', 'Contact Us' ); ?></a>
+<!-- SECTION 11 — QUOTE / CONTACT (the page's closing call to action)
+     Replaces the template's $114/mo pricing card; Brewco quotes to spec. It sits
+     last and has the contact id, so every "Get a Custom Quote" button on the
+     page lands here. -->
+<section class="quote" id="contact">
+  <div class="brewco-container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><?php echo brewco_t( 'quote_eyebrow', 'Get Started' ); ?></span>
+      <h2><?php echo brewco_heading( 'quote_heading', 'Every project is', 'quote_heading_accent', 'quoted to spec' ); ?></h2>
+    </div>
+    <div class="quotecard" data-reveal>
+      <div class="quotecard__lead">
+        <h3><?php echo brewco_t( 'quote_lead_heading', 'Contact us for a no-cost consultation.' ); ?></h3>
+        <p><?php echo brewco_t( 'quote_lead_text', 'Tell us what you are trying to accomplish and where you need to be. We will scope the asset, the build and the tour, and come back with a custom quote.' ); ?></p>
+        <?php /* CONFIRM: goes to /contact/ unless the Button link field is set. This
+                 section is where #contact now lands, so its own button leads to the
+                 contact page itself. */ ?>
+        <a href="<?php echo esc_url( brewco_field( 'finalcta_cta_url', '/contact/' ) ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
+      </div>
+      <ul class="quotecard__locations">
+        <?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?>
+          <li>
+            <strong><?php echo esc_html( brewco_row( $o, 'name' ) ); ?></strong>
+            <span><?php echo nl2br( esc_html( brewco_row( $o, 'address' ) ), false ); ?></span>
+            <?php $tel = brewco_row( $o, 'phone_link' ); $ph = brewco_row( $o, 'phone' ); ?>
+            <?php if ( $ph ) : ?>
+              <a href="tel:<?php echo esc_attr( $tel ? $tel : preg_replace( '/[^0-9+]/', '', $ph ) ); ?>"><?php echo esc_html( $ph ); ?></a>
+            <?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
   </div>
 </section>
 
-<!-- SECTION 14 — FOOTER (nav columns and legal are structural, kept in template) -->
+</main>
+
+<!-- SECTION 12 — FOOTER (nav columns and legal are structural, kept in template) -->
 <footer class="footer">
   <div class="brewco-container">
     <div class="footer__features" data-reveal>

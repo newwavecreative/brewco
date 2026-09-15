@@ -5,7 +5,7 @@
      - scroll reveals (IntersectionObserver)
      - transparent -> solid navbar on scroll
      - mobile menu toggle
-     - parallax translate on scroll
+     - parallax translate and background zoom on scroll
      - flip cards (click / keyboard)
      - count-up stats
    All effects no-op gracefully under prefers-reduced-motion.
@@ -58,12 +58,14 @@
     });
   }
 
-  /* ---------- 4. Parallax + hero zoom + showcase card rotation ---------- */
+  /* ---------- 4. Parallax + hero and photo-banner zoom + showcase card rotation ---------- */
   var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
   var rotateEls = Array.prototype.slice.call(document.querySelectorAll('[data-rotate]'));
   var heroMedia = Array.prototype.slice.call(document.querySelectorAll('.hero__bg video, .hero__bg img'));
   var slideEls = Array.prototype.slice.call(document.querySelectorAll('[data-slide-in]'));
   var SLIDE_PX = 120;   // how far a service image travels before settling
+  var zoomEls = Array.prototype.slice.call(document.querySelectorAll('[data-scroll-zoom]'));
+  var ZOOM_PER_PX = 0.00035;   // scale added per px scrolled, for the hero and [data-scroll-zoom]
   // Reduced-motion: show the hero video's still instead of looping it. The
   // <source> carries media="(prefers-reduced-motion: no-preference)", so current
   // browsers never request the file; this is the backstop for ones that ignore
@@ -78,7 +80,7 @@
       hv.load();
     }
   }
-  if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length || slideEls.length)) {
+  if (!reduce && (parallaxEls.length || rotateEls.length || heroMedia.length || slideEls.length || zoomEls.length)) {
     var ticking = false;
     var applyParallax = function () {
       var vh = window.innerHeight;
@@ -118,13 +120,23 @@
         var rotY = -10 + progress * 16;   // -10deg -> +6deg (subtle)
         el.style.transform = 'rotateY(' + rotY.toFixed(1) + 'deg)';
       });
+      // [data-scroll-zoom] images (the photo banner's background) zoom in as their
+      // section scrolls through the viewport, at the hero's rate: ZOOM_PER_PX per
+      // pixel scrolled since the section's top entered the bottom of the screen,
+      // capped at the hero's 1.3-screen range. The scale goes on the image, not
+      // the parallax wrapper, so the two transforms don't overwrite each other.
+      zoomEls.forEach(function (img) {
+        var sec = (img.closest && img.closest('section')) || img;
+        var travelled = Math.max(0, Math.min(vh - sec.getBoundingClientRect().top, vh * 1.3));
+        img.style.transform = 'scale(' + (1 + travelled * ZOOM_PER_PX).toFixed(4) + ')';
+      });
       // Hero image drifts down and zooms slightly as you scroll past it.
       if (heroMedia.length) {
         var hy = window.scrollY;
         if (hy < vh * 1.3) {
           // Same transform on every slide, or the inactive ones would sit still
           // while the visible one drifts — visible the moment a slide fades in.
-          var ht = 'translate3d(0,' + (hy * 0.28).toFixed(1) + 'px,0) scale(' + (1 + hy * 0.00035).toFixed(4) + ')';
+          var ht = 'translate3d(0,' + (hy * 0.28).toFixed(1) + 'px,0) scale(' + (1 + hy * ZOOM_PER_PX).toFixed(4) + ')';
           heroMedia.forEach(function (m) { m.style.transform = ht; });
         }
       }

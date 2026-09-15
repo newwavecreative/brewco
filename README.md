@@ -138,7 +138,7 @@ ACF off, the output is text- and structure-identical to the deployed version.
 has to write HTML to get "Award-Winning *Experiential Brand Strategy*". The
 accent always renders after the plain part.
 
-Repeaters cover the client bar, stats, services, vehicles, offices, steps,
+Repeaters cover the client bar, stats, services, vehicles, offices,
 stories, footer highlights and social links. The two marquees (clients and
 partner stories) **emit their track twice in PHP** for the seamless loop — add
 each item once; the duplicate is generated. Short bullet lists inside a service
@@ -228,6 +228,18 @@ inject markup.
   `<source>` only matches with reduced motion off, so current browsers don't
   request the file at all (`main.js` resets to the still in any that ignore
   that). Leave it empty to use the first slideshow image.
+- **Photo banner ("Millions of miles."):** 200px taller than its original
+  `70vh`. The section's `min-height` and the content's top padding both carry
+  the extra, so it gains the full 200px at any screen size, as space above the
+  text. Its background zooms in as the section scrolls past, at the hero's rate
+  (`ZOOM_PER_PX` in `main.js`); any `<img data-scroll-zoom>` gets the effect.
+  Off under `prefers-reduced-motion`.
+- **Get Started (quote & offices)** is the last section and the page's call to
+  action. It carries `id="contact"`, so every *Get a Custom Quote* button lands
+  on it, and its own button goes to the contact page (*Quote & offices → Button
+  link*, default `/contact/`, also used by the footer's *Contact Us*). It's white
+  so it doesn't merge with the gray partner stories and footer around it. How It
+  Works and the closing "Let's get started" band were removed.
 
 Asset URLs auto cache-bust on deploy (the plugin versions them with `filemtime`),
 so changes show up on a normal refresh.

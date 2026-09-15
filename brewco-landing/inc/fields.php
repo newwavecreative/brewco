@@ -217,6 +217,12 @@ function brewco_register_fields() {
 		brewco_f( 'text', 'quote_lead_heading', 'Card heading', array( 'default_value' => 'Contact us for a no-cost consultation.' ) ),
 		brewco_f( 'textarea', 'quote_lead_text', 'Card paragraph', array( 'rows' => 4 ) ),
 		brewco_f( 'text', 'quote_cta_label', 'Button label', array( 'default_value' => 'Get a Custom Quote' ) ),
+		// Kept under its original name (it used to sit in the removed Closing CTA tab)
+		// so a link already saved there carries over. The footer's Contact Us uses it too.
+		brewco_f( 'text', 'finalcta_cta_url', 'Button link', array(
+			'default_value' => '/contact/',
+			'instructions'  => 'Where this section’s Get a Custom Quote button goes, e.g. /contact/. The footer’s Contact Us link uses it too.',
+		) ),
 		brewco_f_rep( 'offices', 'Offices', array(
 			brewco_sf( 'text', 'offices', 'name', 'Name', array(
 				'instructions' => 'Shown on the quote card, e.g. "Headquarters".',
@@ -233,17 +239,6 @@ function brewco_register_fields() {
 				'instructions' => 'e.g. +12707542264 — used for the tel: link.',
 			) ),
 		), array( 'button_label' => 'Add office' ) ),
-
-		/* ---------------------------------------------------- HOW IT WORKS */
-		brewco_f_tab( 'How it works' ),
-		brewco_f( 'text', 'how_eyebrow', 'Eyebrow', array( 'default_value' => 'How It Works' ) ),
-		brewco_f( 'text', 'how_heading', 'Heading', array( 'default_value' => 'From first conversation' ) ),
-		brewco_f( 'text', 'how_heading_accent', 'Heading (copper part)', array( 'default_value' => 'to the road' ) ),
-		brewco_f_rep( 'steps', 'Steps', array(
-			brewco_sf( 'text', 'steps', 'step_label', 'Step label', array( 'default_value' => 'Step 1' ) ),
-			brewco_sf( 'text', 'steps', 'title', 'Title' ),
-			brewco_sf( 'textarea', 'steps', 'text', 'Description', array( 'rows' => 3 ) ),
-		), array( 'button_label' => 'Add step', 'max' => 3 ) ),
 
 		/* ------------------------------------------------------- STORIES */
 		brewco_f_tab( 'Partner stories' ),
@@ -264,14 +259,6 @@ function brewco_register_fields() {
 			'button_label' => 'Add story',
 			'instructions' => 'The scrolling row duplicates these automatically — add each story once.',
 		) ),
-
-		/* ----------------------------------------------------- FINAL CTA */
-		brewco_f_tab( 'Closing CTA' ),
-		brewco_f( 'text', 'finalcta_heading', 'Heading', array( 'default_value' => 'Let’s' ) ),
-		brewco_f( 'text', 'finalcta_heading_accent', 'Heading (copper part)', array( 'default_value' => 'get started' ) ),
-		brewco_f( 'text', 'finalcta_text', 'Sub-line', array( 'default_value' => 'Contact us for a no-cost consultation.' ) ),
-		brewco_f( 'text', 'finalcta_cta_label', 'Button label', array( 'default_value' => 'Contact Us' ) ),
-		brewco_f( 'text', 'finalcta_cta_url', 'Button link', array( 'default_value' => '/contact/' ) ),
 
 		/* -------------------------------------------------------- FOOTER */
 		brewco_f_tab( 'Footer' ),

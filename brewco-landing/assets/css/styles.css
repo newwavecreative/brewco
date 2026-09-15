@@ -424,27 +424,6 @@ p{margin:0}
 .plan--featured .checklist li::before{background:var(--cta)}
 
 /* =============================================================
-   12 — HOW IT WORKS (bento)
-   ============================================================= */
-.how{padding-block:clamp(64px,9vw,120px)}
-.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.bento__cell{position:relative;overflow:hidden;color:#fff;border-radius:var(--radius);
-  padding:34px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
-.bento__cell:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
-.bento__cell:nth-child(1){background:linear-gradient(155deg,#3A4E7A,#25355A)}
-.bento__cell:nth-child(2){background:linear-gradient(155deg,#25355A,#0E103C)}
-.bento__cell:nth-child(3){background:linear-gradient(155deg,#5A6B8C,#1B2742)}
-.bento__cell--lg{grid-row:auto}
-.bento__step{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(255,255,255,.85);background:rgba(255,255,255,.16);padding:6px 12px;border-radius:999px;
-  position:absolute;top:30px;left:34px}
-.bento__cell h3{color:#fff;font-size:1.5rem;margin-bottom:10px}
-.bento__cell p{color:rgba(255,255,255,.8)}
-.bento__glow{position:absolute;width:300px;height:300px;border-radius:50%;top:-90px;right:-90px;
-  background:radial-gradient(circle,rgba(255,255,255,.5),transparent 65%);opacity:.25;filter:blur(20px)}
-
-/* =============================================================
    13 — TESTIMONIALS
    ============================================================= */
 .testimonials{padding-block:clamp(64px,9vw,120px);background:var(--gray-50);color:var(--navy);overflow:hidden}
@@ -459,13 +438,6 @@ p{margin:0}
 .review figcaption span{display:flex;flex-direction:column;font-size:.9rem;color:var(--gray-500)}
 .review figcaption strong{color:var(--navy)}
 
-/* =============================================================
-   14 — FINAL CTA
-   ============================================================= */
-.finalcta{padding-block:clamp(64px,9vw,120px);text-align:center;background:var(--white)}
-.finalcta__inner{max-width:640px;margin-inline:auto;color:var(--navy)}
-.finalcta h2{color:var(--navy);font-size:clamp(1.9rem,4vw,3rem);margin-bottom:16px}
-.finalcta p{color:var(--gray-500);margin-bottom:30px;font-size:1.1rem}
 .trustbadge{margin-top:22px;color:var(--gray-500);font-weight:600;font-size:.95rem;
   display:inline-flex;align-items:center;gap:8px}
 .trustbadge .stars{color:var(--cta);letter-spacing:1px}
@@ -519,9 +491,13 @@ p{margin:0}
 .showcase__body .checklist{margin-bottom:28px}
 
 /* 08 — PHOTO CTA */
-.photocta{position:relative;min-height:70vh;display:flex;align-items:flex-end;overflow:hidden;color:#fff}
+/* 200px taller than the original 70vh. min-height carries it where 70vh is the
+   taller of the two, and the content's extra top padding where the content is,
+   so the section gains the full 200px at any screen size, as space above the
+   text. The image zooms on scroll via [data-scroll-zoom] in main.js. */
+.photocta{position:relative;min-height:calc(70vh + 200px);display:flex;align-items:flex-end;overflow:hidden;color:#fff}
 .photocta__bg{position:absolute;inset:-12% 0;z-index:0}
-.photocta__bg img{width:100%;height:100%;object-fit:cover}
+.photocta__bg img{width:100%;height:100%;object-fit:cover;will-change:transform;transform-origin:center}
 .photocta__overlay{position:absolute;inset:0;
   background:linear-gradient(90deg,rgba(14,16,60,.88),rgba(14,16,60,.2) 65%),
              linear-gradient(180deg,transparent,rgba(14,16,60,.55))}
@@ -532,7 +508,8 @@ p{margin:0}
    line. Now the container keeps its normal width (aligned with every other
    section) and only the text is capped, wide enough that "Thousands of event
    days." (667px at full size) holds one line. */
-.photocta__content{position:relative;z-index:1;padding-block:clamp(56px,9vw,110px)}
+.photocta__content{position:relative;z-index:1;padding-block:clamp(56px,9vw,110px);
+  padding-top:calc(clamp(56px,9vw,110px) + 200px)}
 .photocta__content h2,.photocta__content p{max-width:760px}
 .photocta__content p{text-wrap:pretty}
 .photocta__content h2{color:#fff;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;margin:14px 0 16px}
@@ -633,14 +610,14 @@ p{margin:0}
 /* =============================================================
    MINIMUM TEXT SIZE — nothing below 12pt (16px = 1rem)
    ============================================================= */
-.eyebrow,.stat__label,.tag,.plan__badge,.product__badge,.bento__step,
+.eyebrow,.stat__label,.tag,.plan__badge,.product__badge,
 .footer__bottom,.feature span,.review figcaption span,.product__note,
 .chart__key,.pill,.btn,.footer__nav a,.footer__pills .pill{
   font-size:1rem}
 .chart__axis,.chart__lbl{font-size:16px}
 /* keep the uppercase micro-labels legible but not oversized at the 16px floor */
 .eyebrow{letter-spacing:.1em}
-.stat__label,.bento__step{letter-spacing:.08em}
+.stat__label{letter-spacing:.08em}
 
 /* =============================================================
    RESPONSIVE
@@ -659,8 +636,6 @@ p{margin:0}
   .program--reverse .program__media{order:0}
   .footer__main{grid-template-columns:1fr;gap:32px}
   .plan--featured{transform:none}
-  .bento{grid-template-columns:1fr}
-  .bento__cell--lg{grid-row:auto}
 }
 @media (max-width:560px){
   .footer__features,.footer__nav{grid-template-columns:1fr}
@@ -678,7 +653,7 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){
   [data-reveal]{opacity:1;transform:none;filter:none;transition:none}
   .marquee__track,.hero__cue::before{animation:none}
-  .hero__bg img,.hero__bg video{transform:none !important}
+  .hero__bg img,.hero__bg video,.photocta__bg img{transform:none !important}
   .featurecard__icon--img[data-slide-in]{transform:none !important}
   *{scroll-behavior:auto}
 }
@@ -705,7 +680,9 @@ p{margin:0}
 .taggrid a.tag:focus-visible{outline:2px solid var(--cta);outline-offset:3px}
 
 /* --- QUOTE / CONTACT -------------------------------------------------- */
-.quote{padding-block:clamp(64px,9vw,120px);background:var(--gray-50)}
+/* White, not gray: this section now sits last, between the gray partner stories
+   and the gray footer, and a gray band here would merge all three. */
+.quote{padding-block:clamp(64px,9vw,120px);background:var(--white)}
 .quotecard{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,56px);
   background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius);box-shadow:var(--shadow);
   padding:clamp(28px,4vw,52px);max-width:1000px;margin-inline:auto;margin-top:44px}
