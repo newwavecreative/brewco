@@ -175,7 +175,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
       <a href="#our-work">Our Work</a>
       <a href="#fleet">Vehicles</a>
     </nav>
-    <a href="#contact" class="btn btn--cta nav__cta"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
+    <a href="<?php echo brewco_link( 'nav_cta_url', '#contact' ); ?>" class="btn btn--cta nav__cta"><?php echo brewco_t( 'nav_cta_label', 'Get a Custom Quote' ); ?></a>
     <button class="nav__burger" aria-label="Open menu" aria-expanded="false" data-menu-toggle>
       <span></span><span></span><span></span>
     </button>
@@ -185,7 +185,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
     <a href="#services">What We Do</a>
     <a href="#our-work">Our Work</a>
     <a href="#fleet">Vehicles</a>
-    <a href="#contact" class="btn btn--cta"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
+    <a href="<?php echo brewco_link( 'nav_cta_url', '#contact' ); ?>" class="btn btn--cta"><?php echo brewco_t( 'nav_cta_label', 'Get a Custom Quote' ); ?></a>
   </div>
 </header>
 
@@ -240,8 +240,8 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
     </div>
     <div class="hero__right" data-reveal data-reveal-delay="180">
       <div class="hero__actions">
-        <a href="#contact" class="btn btn--cta btn--lg"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
-        <a href="#work" class="hero__link"><?php echo brewco_t( 'hero_link_label', 'See our work' ); ?> &rarr;</a>
+        <a href="<?php echo brewco_link( 'hero_cta_url', '#contact' ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
+        <a href="<?php echo brewco_link( 'hero_link_url', '#work' ); ?>" class="hero__link"><?php echo brewco_t( 'hero_link_label', 'See our work' ); ?> &rarr;</a>
       </div>
     </div>
   </div>
@@ -352,7 +352,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
           <li><?php echo esc_html( $item ); ?></li>
         <?php endforeach; ?>
       </ul>
-      <a href="#services" class="btn btn--dark"><?php echo brewco_t( 'showcase_cta_label', 'What We Do' ); ?></a>
+      <a href="<?php echo brewco_link( 'showcase_cta_url', '#services' ); ?>" class="btn btn--dark"><?php echo brewco_t( 'showcase_cta_label', 'What We Do' ); ?></a>
     </div>
   </div>
 </section>
@@ -385,7 +385,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
     <span class="eyebrow eyebrow--light"><?php echo brewco_t( 'photocta_eyebrow', 'North America · Europe' ); ?></span>
     <h2><?php echo brewco_t_br( 'photocta_heading', "Millions of miles.\nThousands of event days." ); ?></h2>
     <p><?php echo brewco_t( 'photocta_text', 'Our team executes thousands of event days annually across North America and Europe.' ); ?></p>
-    <a href="#contact" class="btn btn--cta btn--lg"><?php echo brewco_t( 'photocta_cta_label', 'Get a Custom Quote' ); ?></a>
+    <a href="<?php echo brewco_link( 'photocta_cta_url', '#contact' ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'photocta_cta_label', 'Get a Custom Quote' ); ?></a>
   </div>
 </section>
 
@@ -520,7 +520,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
         <?php /* CONFIRM: goes to /contact/ unless the Button link field is set. This
                  section is where #contact now lands, so its own button leads to the
                  contact page itself. */ ?>
-        <a href="<?php echo esc_url( brewco_field( 'finalcta_cta_url', '/contact/' ) ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
+        <a href="<?php echo brewco_link( 'finalcta_cta_url', '/contact/' ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
       </div>
       <ul class="quotecard__locations">
         <?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?>
@@ -558,7 +558,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
         <div class="footer__pills">
           <?php $fph = brewco_field( 'footer_phone', '270-754-2264' ); ?>
           <a href="tel:<?php echo esc_attr( brewco_field( 'footer_phone_link', '+12707542264' ) ); ?>" class="pill pill--contact">✆ <?php echo esc_html( $fph ); ?></a>
-          <a href="<?php echo esc_url( brewco_field( 'finalcta_cta_url', '/contact/' ) ); ?>" class="pill pill--contact">✉ Contact Us</a>
+          <a href="<?php echo brewco_link( 'finalcta_cta_url', '/contact/' ); ?>" class="pill pill--contact">✉ Contact Us</a>
         </div>
         <div class="footer__social">
           <?php foreach ( brewco_rows( 'footer_socials', $fb_socials, array( 'url' ) ) as $s ) : ?>

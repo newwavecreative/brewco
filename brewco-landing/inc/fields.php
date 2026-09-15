@@ -71,8 +71,25 @@ function brewco_register_fields() {
 
 	$ta  = array( 'type' => 'textarea', 'rows' => 3 );
 	$img = array( 'return_format' => 'array', 'preview_size' => 'medium' );
+	/* Button link fields. Plain text rather than ACF's URL type, which rejects the
+	   in-page anchors (#contact) and root-relative paths (/contact/) these use.
+	   The default shows in the editor until the field is first saved. */
+	$link = function ( $default ) {
+		return array(
+			'default_value' => $default,
+			'instructions'  => 'Where the button goes: a section of this page (#contact, #faq, #services, #our-work, #fleet, #approach), a page on this site (e.g. /contact/), or a full URL. Left blank, it goes to ' . $default . '.',
+		);
+	};
 
 	$fields = array(
+
+		/* -------------------------------------------------------- HEADER */
+		brewco_f_tab( 'Header' ),
+		brewco_f( 'text', 'nav_cta_label', 'Button label', array(
+			'default_value' => 'Get a Custom Quote',
+			'instructions'  => 'The button at the right of the top menu, also shown in the mobile menu.',
+		) ),
+		brewco_f( 'text', 'nav_cta_url', 'Button link', $link( '#contact' ) ),
 
 		/* ---------------------------------------------------------- HERO */
 		brewco_f_tab( 'Hero' ),
@@ -82,7 +99,9 @@ function brewco_register_fields() {
 			'instructions' => 'Line breaks here become line breaks on the page.',
 		) ),
 		brewco_f( 'text', 'hero_cta_label', 'Button label', array( 'default_value' => 'Get a Custom Quote' ) ),
+		brewco_f( 'text', 'hero_cta_url', 'Button link', $link( '#contact' ) ),
 		brewco_f( 'text', 'hero_link_label', 'Secondary link label', array( 'default_value' => 'See our work' ) ),
+		brewco_f( 'text', 'hero_link_url', 'Secondary link', $link( '#work' ) ),
 		brewco_f( 'gallery', 'hero_slides', 'Background slideshow', array(
 			'return_format' => 'array',
 			'preview_size'  => 'medium',
@@ -141,6 +160,7 @@ function brewco_register_fields() {
 			'instructions' => 'One item per line.',
 		) ),
 		brewco_f( 'text', 'showcase_cta_label', 'Button label', array( 'default_value' => 'What We Do' ) ),
+		brewco_f( 'text', 'showcase_cta_url', 'Button link', $link( '#services' ) ),
 		brewco_f( 'image', 'showcase_image', 'Image', $img ),
 
 		/* --------------------------------------------------------- STATS */
@@ -194,6 +214,7 @@ function brewco_register_fields() {
 		) ),
 		brewco_f( 'textarea', 'photocta_text', 'Paragraph', $ta ),
 		brewco_f( 'text', 'photocta_cta_label', 'Button label', array( 'default_value' => 'Get a Custom Quote' ) ),
+		brewco_f( 'text', 'photocta_cta_url', 'Button link', $link( '#contact' ) ),
 		brewco_f( 'image', 'photocta_image', 'Background image', $img ),
 
 		/* --------------------------------------------------------- FLEET */

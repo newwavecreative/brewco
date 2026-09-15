@@ -250,6 +250,15 @@ inject markup.
   data always matches the page. Google only shows FAQ rich results for
   government and health sites, so the benefit here is clean, machine-readable
   Q&A for AI assistants and other search engines, not a Google snippet.
+- **Buttons:** every button has an editable label and link, next to each other
+  in the section's tab: *Header* (the top-menu button, also in the mobile menu),
+  *Hero* (button and "See our work" link), *Integrated team*, *Photo banner*
+  and *Quote & offices* (whose link the footer's *Contact Us* also uses). A link
+  can be a section of this page (`#contact`, `#faq`, `#services`, `#our-work`,
+  `#fleet`, `#approach`), a page on the site (`/contact/`) or a full URL. The
+  link fields are plain text on purpose (ACF's URL type rejects `#…` and `/…`),
+  default to where each button always went, and fall back to that default if
+  left blank or given something unsafe (`brewco_link()` in `helpers.php`).
 
 Asset URLs auto cache-bust on deploy (the plugin versions them with `filemtime`),
 so changes show up on a normal refresh.

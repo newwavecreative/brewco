@@ -202,6 +202,17 @@ function brewco_lines( $name, $fallback_lines = array() ) {
 	return $lines ? array_values( $lines ) : $fallback_lines;
 }
 
+/**
+ * A button's link field: a section of this page (#contact), a page on the site
+ * (/contact/) or a full URL. esc_url() returns '' for anything unsafe or
+ * malformed (e.g. javascript:), so fall back to the default instead of printing
+ * a button that goes nowhere.
+ */
+function brewco_link( $name, $fallback ) {
+	$url = esc_url( trim( (string) brewco_field( $name, $fallback ) ) );
+	return '' !== $url ? $url : esc_url( $fallback );
+}
+
 /** Row value with fallback, for repeater rows that may predate a sub-field. */
 function brewco_row( $row, $key, $fallback = '' ) {
 	return ( is_array( $row ) && isset( $row[ $key ] ) && '' !== $row[ $key ] ) ? $row[ $key ] : $fallback;
