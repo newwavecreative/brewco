@@ -229,9 +229,10 @@ inject markup.
   request the file at all (`main.js` resets to the still in any that ignore
   that). Leave it empty to use the first slideshow image.
 - **Photo banner ("Millions of miles."):** 200px taller than its original
-  `70vh`. The section's `min-height` and the content's top padding both carry
-  the extra, so it gains the full 200px at any screen size, as space above the
-  text. Its background zooms in as the section scrolls past, at the hero's rate
+  `70vh`, with its content centered vertically. The section's `min-height` and
+  100px more padding above and below the content both carry the extra, so it
+  gains the full 200px at any screen size and the text stays centered. Its
+  background zooms in as the section scrolls past, at the hero's rate
   (`ZOOM_PER_PX` in `main.js`); any `<img data-scroll-zoom>` gets the effect.
   Off under `prefers-reduced-motion`.
 - **Get Started (quote & offices)** is the last section and the page's call to
