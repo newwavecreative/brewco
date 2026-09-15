@@ -174,6 +174,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
       <a href="#services">What We Do</a>
       <a href="#our-work">Our Work</a>
       <a href="#fleet">Vehicles</a>
+      <a href="#faq">FAQ</a>
     </nav>
     <a href="<?php echo brewco_link( 'nav_cta_url', '#contact' ); ?>" class="btn btn--cta nav__cta"><?php echo brewco_t( 'nav_cta_label', 'Get a Custom Quote' ); ?></a>
     <button class="nav__burger" aria-label="Open menu" aria-expanded="false" data-menu-toggle>
@@ -185,6 +186,7 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
     <a href="#services">What We Do</a>
     <a href="#our-work">Our Work</a>
     <a href="#fleet">Vehicles</a>
+    <a href="#faq">FAQ</a>
     <a href="<?php echo brewco_link( 'nav_cta_url', '#contact' ); ?>" class="btn btn--cta"><?php echo brewco_t( 'nav_cta_label', 'Get a Custom Quote' ); ?></a>
   </div>
 </header>
@@ -497,6 +499,9 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
         </button>
       </div>
     </div>
+  </div>
+  <div class="storycar__more brewco-container" data-reveal>
+    <a href="<?php echo brewco_link( 'stories_more_url', '/our-work/' ); ?>" class="btn btn--dark"><?php echo brewco_t( 'stories_more_label', 'View More Work' ); ?></a>
   </div>
 </section>
 

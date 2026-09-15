@@ -198,7 +198,9 @@ inject markup.
   title. It's a native horizontal scroller with scroll-snap, so swipe,
   trackpad and keyboard work without JS; `main.js` adds mouse drag (a drag
   never opens the link), previous/next arrows and dots. Nothing
-  auto-advances. *Link label* sets the "See the work →" text.
+  auto-advances. *Link label* sets the "See the work →" text. A *View More
+  Work* button under the carousel leads to the full `/our-work/` page (*More
+  work button label* / *link*).
 - **Vehicle links:** each row in *Vehicles → Vehicle types* has a *Link*.
   With a link the pill is clickable (and gets the hover lift); without one it's
   a plain pill. The built-in list links all ten to brewco.com's

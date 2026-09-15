@@ -296,6 +296,8 @@ function brewco_register_fields() {
 			'button_label' => 'Add story',
 			'instructions' => 'Each story is one slide in the Our Work carousel. Drag rows to reorder.',
 		) ),
+		brewco_f( 'text', 'stories_more_label', 'More work button label', array( 'default_value' => 'View More Work' ) ),
+		brewco_f( 'text', 'stories_more_url', 'More work button link', $link( '/our-work/' ) ),
 
 		/* ----------------------------------------------------------- FAQ */
 		brewco_f_tab( 'FAQ' ),
