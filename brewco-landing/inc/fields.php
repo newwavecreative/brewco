@@ -166,14 +166,14 @@ function brewco_register_fields() {
 
 		/* --------------------------------------------------------- STATS */
 		brewco_f_tab( 'Stats' ),
+		brewco_f( 'text', 'stats_heading', 'Heading', array( 'default_value' => 'Experience that shows up' ) ),
+		brewco_f( 'text', 'stats_heading_accent', 'Heading (copper part)', array( 'default_value' => 'where your audience is' ) ),
+		brewco_f( 'textarea', 'stats_text', 'Paragraph', $ta ),
 		brewco_f_rep( 'stats', 'Stats', array(
 			brewco_sf( 'number', 'stats', 'value', 'Number' ),
 			brewco_sf( 'text', 'stats', 'suffix', 'Suffix', array( 'instructions' => 'e.g. % — leave blank for none.' ) ),
 			brewco_sf( 'text', 'stats', 'label', 'Label' ),
 		), array( 'layout' => 'table', 'button_label' => 'Add stat', 'max' => 4 ) ),
-		brewco_f( 'text', 'stats_heading', 'Heading', array( 'default_value' => 'Experience that shows up' ) ),
-		brewco_f( 'text', 'stats_heading_accent', 'Heading (copper part)', array( 'default_value' => 'where your audience is' ) ),
-		brewco_f( 'textarea', 'stats_text', 'Paragraph', $ta ),
 
 		/* ------------------------------------------------------ SERVICES */
 		brewco_f_tab( 'Services' ),

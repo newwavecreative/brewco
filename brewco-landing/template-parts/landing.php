@@ -362,6 +362,10 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
 <!-- SECTION 07 — STATS -->
 <section class="stats">
   <div class="brewco-container">
+    <div class="stats__headline" data-reveal>
+      <h2><?php echo brewco_heading( 'stats_heading', 'Experience that shows up', 'stats_heading_accent', 'where your audience is' ); ?></h2>
+      <p><?php echo brewco_t( 'stats_text', 'Our team of experiential marketing experts have logged millions of miles and executed thousands of event days across North America and Europe.' ); ?></p>
+    </div>
     <div class="stats__grid">
       <?php $i = 0; foreach ( brewco_rows( 'stats', $fb_stats, array( 'label', 'value' ) ) as $stat ) : ?>
         <div class="stat" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
@@ -369,10 +373,6 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
           <div class="stat__label"><?php echo esc_html( brewco_row( $stat, 'label' ) ); ?></div>
         </div>
       <?php $i++; endforeach; ?>
-    </div>
-    <div class="stats__headline" data-reveal>
-      <h2><?php echo brewco_heading( 'stats_heading', 'Experience that shows up', 'stats_heading_accent', 'where your audience is' ); ?></h2>
-      <p><?php echo brewco_t( 'stats_text', 'Our team of experiential marketing experts have logged millions of miles and executed thousands of event days across North America and Europe.' ); ?></p>
     </div>
   </div>
 </section>
