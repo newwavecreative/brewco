@@ -730,7 +730,9 @@ p{margin:0}
 .storycard__logo{display:inline-flex;align-items:center;padding:8px 12px;border-radius:10px;background:#fff;box-shadow:var(--shadow-sm)}
 .storycard__logo img{display:block;height:32px;width:auto;max-width:140px;object-fit:contain}
 .storycard__title{margin:0;color:#fff;font-size:clamp(1.8rem,4.2vw,3.4rem);line-height:1.02;letter-spacing:-.02em}
-.storycard__link{color:inherit;text-decoration:none}
+/* Repeated for :hover and :focus because the theme's a:hover / a:focus underline
+   (and colour) outrank a single class, and the whole slide is this link. */
+.storycard__link,.storycard__link:hover,.storycard__link:focus{color:inherit;text-decoration:none}
 .storycard__link::after{content:"";position:absolute;inset:0;z-index:1}
 /* Focus. Beaver Builder's theme puts an orange outline on a:focus, which showed
    around the title after any mouse click or drag. Drop it, and draw the keyboard
