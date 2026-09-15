@@ -139,7 +139,7 @@ has to write HTML to get "Award-Winning *Experiential Brand Strategy*". The
 accent always renders after the plain part.
 
 Repeaters cover the client bar, stats, services, vehicles, offices,
-stories, footer highlights and social links. The two marquees (clients and
+stories, FAQ questions, footer highlights and social links. The two marquees (clients and
 partner stories) **emit their track twice in PHP** for the seamless loop — add
 each item once; the duplicate is generated. Short bullet lists inside a service
 card are a textarea, one item per line.
@@ -241,6 +241,15 @@ inject markup.
   link*, default `/contact/`, also used by the footer's *Contact Us*). It's white
   so it doesn't merge with the gray partner stories and footer around it. How It
   Works and the closing "Let's get started" band were removed.
+- **FAQ** sits just above Get Started, on a slate band: a native `<details>`
+  accordion (no JS; opening one closes the others via `name`, where supported)
+  with every answer in the page source even while collapsed. Questions come
+  from *FAQ → Questions*. The built-in set is compiled from brewco.com and
+  marked `CONFIRM:` for client review, and adding even one question replaces
+  all of them. The same rows are output as `FAQPage` JSON-LD, so the structured
+  data always matches the page. Google only shows FAQ rich results for
+  government and health sites, so the benefit here is clean, machine-readable
+  Q&A for AI assistants and other search engines, not a Google snippet.
 
 Asset URLs auto cache-bust on deploy (the plugin versions them with `filemtime`),
 so changes show up on a normal refresh.

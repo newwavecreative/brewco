@@ -4,7 +4,7 @@
  * with Services moved up to follow the statement, How It Works and the closing
  * CTA removed, and the quote section moved last as the page's call to action:
  *   nav · hero · logos · statement · services · integrated · stats ·
- *   photo CTA · fleet · partner stories · quote · footer
+ *   photo CTA · fleet · partner stories · FAQ · quote · footer
  *
  * Included by templates/landing-template.php, which defines $A = plugin assets base URL.
  * Animation hooks: data-reveal | data-reveal-delay | data-parallax | data-scroll-zoom | data-rotate | data-count | data-flip
@@ -114,8 +114,53 @@ $fb_socials = array(
 	array( 'label' => 'X',         'url' => 'https://twitter.com/brewcomarketing' ),
 );
 
+/* FAQ fallbacks. Every answer is compiled from brewco.com's "Who We Are", "What
+   We Do", "Vehicles" and "Contact" pages; nothing is added. Each answer names the
+   company and stands on its own, so it still makes sense when an AI assistant or
+   search engine quotes it without the question. */
+$fb_faqs = array(
+	array(
+		'question' => 'What does Brewco Marketing Group do?',
+		'answer'   => 'Brewco Marketing Group designs, fabricates and manages custom mobile experiences that immerse customers in face-to-face interactions that educate and entertain. Its services include experiential marketing, sponsorship negotiation and activation, and design and fabrication, along with Brewco Health, Brewco Staging and Brewco Hospitality.',
+	),
+	array(
+		'question' => 'Is Brewco Marketing Group employee-owned?',
+		'answer'   => 'Yes. Brewco Marketing Group is a 100% employee-owned company dedicated to producing excellent mobile experiences. For 25 years, it has created memorable mobile programs that engage audiences where they work, live and play.',
+	),
+	array(
+		'question' => 'What kinds of vehicles does Brewco Marketing Group offer?',
+		'answer'   => 'Brewco Marketing Group’s vehicles include box trucks, bumper pull trailers, custom buses, custom containers, expandable trailers, gooseneck trailers, mobile hospitality trailers, mobile kitchens, mobile stages and Sprinter vans.',
+	),
+	array(
+		'question' => 'Does Brewco Marketing Group design and build its mobile assets in-house?',
+		'answer'   => 'Yes. Brewco Marketing Group is a completely integrated company that removes the hassle and costs associated with third-party vendors. Its in-house team includes a designer, fabricators, electricians, HVAC experts, maintenance technicians and support staff.',
+	),
+	array(
+		'question' => 'Where does Brewco Marketing Group operate?',
+		'answer'   => 'Brewco Marketing Group’s team of experiential marketing experts executes thousands of event days annually across North America and Europe. The company is headquartered in Central City, Kentucky, with offices in Nashville, Tennessee; Charlotte, North Carolina; and London, England.',
+	),
+	array(
+		'question' => 'Which brands has Brewco Marketing Group worked with?',
+		'answer'   => 'Brewco Marketing Group’s partners include IBM, McDonald’s, PSEG Long Island, Major League Baseball and the National Baseball Hall of Fame and Museum, and the Texas Division of Emergency Management. Projects range from building and managing McDonald’s fleet of Mobile Restaurants to fabricating and delivering four mobile medical ICUs for Texas during a pandemic.',
+	),
+	array(
+		'question' => 'What are Brewco Health, Brewco Staging and Brewco Hospitality?',
+		'answer'   => 'Brewco Health works with regional healthcare systems and emergency management departments to build mobile health solutions that increase medical access for underserved populations and communities in crisis. Brewco Staging provides mobile stages for entertainment and corporate events. Brewco Hospitality offers mobile hospitality assets for short-term or long-term lease, featuring viewing decks, TVs, lounging furniture, private bathrooms and dining tables.',
+	),
+	array(
+		'question' => 'How do I get a quote from Brewco Marketing Group?',
+		'answer'   => 'Every Brewco Marketing Group project is quoted to spec. Contact Brewco for a no-cost consultation, or send a message or request a project quote through the contact page.',
+	),
+);
+
 $clients = brewco_rows( 'logobar_clients', $fb_clients, array( 'name', 'logo' ) );
 $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' ) );
+/* FAQ rows need both halves: a question with no answer (or the reverse) would
+   show an empty panel and publish an invalid FAQPage entry, so it's skipped. */
+$faqs = array_values( array_filter( brewco_rows( 'faqs', $fb_faqs, array( 'question', 'answer' ) ), function ( $f ) {
+	return '' !== trim( (string) brewco_row( $f, 'question' ) ) && '' !== trim( (string) brewco_row( $f, 'answer' ) );
+} ) );
+if ( ! $faqs ) { $faqs = $fb_faqs; }
 ?>
 <!-- SECTION 01 — NAVBAR (labels are structural, kept in the template) -->
 <header class="nav" id="nav" data-nav>
@@ -413,7 +458,52 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
   </div>
 </section>
 
-<!-- SECTION 11 — QUOTE / CONTACT (the page's closing call to action)
+<!-- SECTION 11 — FAQ (accordion + FAQPage structured data)
+     Native <details>/<summary>: no JS, keyboard-accessible, and every answer is in
+     the page source even while collapsed, for search engines and AI assistants.
+     The JSON-LD at the end is built from the same rows, so the structured data
+     always matches what's on the page. CONFIRM: the built-in answers are compiled
+     from brewco.com; have the client review them. -->
+<section class="faq" id="faq">
+  <div class="brewco-container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow"><?php echo brewco_t( 'faq_eyebrow', 'FAQ' ); ?></span>
+      <h2><?php echo brewco_heading( 'faq_heading', 'Frequently asked', 'faq_heading_accent', 'questions' ); ?></h2>
+    </div>
+    <div class="faq__list" data-reveal>
+      <?php foreach ( $faqs as $fi => $faq ) : ?>
+        <?php /* name= makes these an exclusive accordion (opening one closes the
+                 others) where supported; elsewhere each simply opens on its own. */ ?>
+        <details class="faq__item" name="brewco-faq"<?php echo 0 === $fi ? ' open' : ''; ?>>
+          <summary class="faq__q"><h3><?php echo esc_html( brewco_row( $faq, 'question' ) ); ?></h3></summary>
+          <div class="faq__a"><p><?php echo nl2br( esc_html( brewco_row( $faq, 'answer' ) ), false ); ?></p></div>
+        </details>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <?php
+  // FAQPage structured data from the same rows as the accordion. JSON_HEX_TAG
+  // escapes < and >, so nothing typed into an answer can close this script tag.
+  $faq_schema = array(
+      '@context'   => 'https://schema.org',
+      '@type'      => 'FAQPage',
+      'mainEntity' => array(),
+  );
+  foreach ( $faqs as $faq ) {
+      $faq_schema['mainEntity'][] = array(
+          '@type'          => 'Question',
+          'name'           => trim( (string) brewco_row( $faq, 'question' ) ),
+          'acceptedAnswer' => array(
+              '@type' => 'Answer',
+              'text'  => trim( (string) brewco_row( $faq, 'answer' ) ),
+          ),
+      );
+  }
+  ?>
+  <script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ); ?></script>
+</section>
+
+<!-- SECTION 12 — QUOTE / CONTACT (the page's closing call to action)
      Replaces the template's $114/mo pricing card; Brewco quotes to spec. It sits
      last and has the contact id, so every "Get a Custom Quote" button on the
      page lands here. -->
@@ -450,7 +540,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
 
 </main>
 
-<!-- SECTION 12 — FOOTER (nav columns and legal are structural, kept in template) -->
+<!-- SECTION 13 — FOOTER (nav columns and legal are structural, kept in template) -->
 <footer class="footer">
   <div class="brewco-container">
     <div class="footer__features" data-reveal>

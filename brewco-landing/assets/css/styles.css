@@ -655,6 +655,8 @@ p{margin:0}
   [data-reveal]{opacity:1;transform:none;filter:none;transition:none}
   .marquee__track,.hero__cue::before{animation:none}
   .hero__bg img,.hero__bg video,.photocta__bg img{transform:none !important}
+  .faq__q::after{transition:none}
+  .faq__item::details-content{transition:none}
   .featurecard__icon--img[data-slide-in]{transform:none !important}
   *{scroll-behavior:auto}
 }
@@ -715,6 +717,38 @@ p{margin:0}
 .story__logo{display:block;height:var(--story-logo-h);width:auto;max-width:var(--story-logo-max-w);
   object-fit:contain;object-position:left center}
 .story blockquote{margin:0;color:var(--gray-500);font-size:.98rem;line-height:1.6}
+
+/* --- FAQ -------------------------------------------------------------- */
+/* Slate, like Services: the FAQ sits between the gray partner stories and the
+   white quote section, so either light colour would merge with a neighbour. The
+   heading flips the same way Services does. */
+.faq{padding-block:clamp(64px,9vw,120px);background:var(--slate)}
+.faq .section-head h2{color:var(--white)}
+.faq .section-head .text-accent{color:var(--accent-on-dark)}
+.faq .section-head .eyebrow{color:rgba(255,255,255,.72)}
+.faq__list{max-width:820px;margin-inline:auto;border-top:1px solid rgba(255,255,255,.18)}
+.faq__item{border-bottom:1px solid rgba(255,255,255,.18)}
+.faq__q{display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:24px 4px;cursor:pointer;list-style:none;color:var(--white)}
+.faq__q::-webkit-details-marker{display:none}
+.faq__q h3{margin:0;color:var(--white);font-size:clamp(1.1rem,2vw,1.35rem);line-height:1.3}
+/* Chevron: points down when closed, up when open. */
+.faq__q::after{content:"";flex:0 0 auto;width:11px;height:11px;margin-right:4px;
+  border-right:2px solid var(--accent-on-dark);border-bottom:2px solid var(--accent-on-dark);
+  transform:translateY(-3px) rotate(45deg);transition:transform .25s var(--ease)}
+.faq__item[open] .faq__q::after{transform:translateY(3px) rotate(-135deg)}
+.faq__q:hover h3{color:var(--accent-on-dark)}
+.faq__q:focus-visible{outline:2px solid var(--accent-on-dark);outline-offset:4px;border-radius:4px}
+.faq__a{padding:0 4px 26px}
+.faq__a p{margin:0;max-width:720px;color:rgba(255,255,255,.82);font-size:1.05rem;line-height:1.65}
+/* Smooth open/close where the browser can animate to height:auto; elsewhere the
+   panel just opens instantly, which is fine. */
+@supports (interpolate-size:allow-keywords){
+  .faq__item{interpolate-size:allow-keywords}
+  .faq__item::details-content{height:0;overflow:clip;
+    transition:height .3s var(--ease),content-visibility .3s allow-discrete}
+  .faq__item[open]::details-content{height:auto}
+}
 
 /* --- FOOTER SOCIAL ---------------------------------------------------- */
 .footer__social{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px}

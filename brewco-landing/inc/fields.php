@@ -260,6 +260,24 @@ function brewco_register_fields() {
 			'instructions' => 'The scrolling row duplicates these automatically — add each story once.',
 		) ),
 
+		/* ----------------------------------------------------------- FAQ */
+		brewco_f_tab( 'FAQ' ),
+		brewco_f( 'text', 'faq_eyebrow', 'Eyebrow', array( 'default_value' => 'FAQ' ) ),
+		brewco_f( 'text', 'faq_heading', 'Heading', array( 'default_value' => 'Frequently asked' ) ),
+		brewco_f( 'text', 'faq_heading_accent', 'Heading (copper part)', array( 'default_value' => 'questions' ) ),
+		brewco_f_rep( 'faqs', 'Questions', array(
+			brewco_sf( 'text', 'faqs', 'question', 'Question', array(
+				'instructions' => 'Phrase it the way someone would ask it, and name the company, e.g. “Is Brewco Marketing Group employee-owned?”',
+			) ),
+			brewco_sf( 'textarea', 'faqs', 'answer', 'Answer', array(
+				'rows'         => 4,
+				'instructions' => 'A complete answer that makes sense on its own. Plain text; line breaks become line breaks. It is also published as FAQ structured data for search engines and AI assistants, so keep it factual.',
+			) ),
+		), array(
+			'button_label' => 'Add question',
+			'instructions' => 'Adding even one question replaces all of the built-in questions, so enter the full set. A question without an answer (or the reverse) is skipped.',
+		) ),
+
 		/* -------------------------------------------------------- FOOTER */
 		brewco_f_tab( 'Footer' ),
 		brewco_f_rep( 'footer_features', 'Highlights', array(
