@@ -5,10 +5,11 @@
  * Every getter here takes the template's original hardcoded value as its
  * fallback. That matters for two reasons:
  *
- *   1. ACF's `default_value` only populates fields when a post is CREATED.
- *      A page that already exists (like the draft published before these
- *      fields shipped) comes back with every field empty — without fallbacks
- *      it would render as a blank shell.
+ *   1. ACF only applies a field's `default_value` while the field has no
+ *      stored value. Once a page has been saved with a field left blank, that
+ *      blank is what comes back (the original draft came back with every field
+ *      empty for this reason) — without fallbacks it would render as a blank
+ *      shell.
  *   2. If ACF is ever deactivated, `get_field()` disappears. The guards below
  *      mean the page degrades to exactly the copy it shipped with rather than
  *      fataling.

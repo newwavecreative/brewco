@@ -11,9 +11,10 @@
  * Local field groups are read-only in the ACF admin (that is expected) — edit
  * this file, not the UI.
  *
- * NOTE: default_value only applies when a post is CREATED. Existing pages come
- * back empty, which is why every getter in helpers.php carries the shipped copy
- * as an inline fallback. The defaults here are a convenience for new pages.
+ * NOTE: ACF shows and returns default_value only while a field has no stored
+ * value (checked on production, ACF 6.8.10). A field that has been saved blank
+ * stays blank, which is why every getter in helpers.php also carries the
+ * shipped copy as an inline fallback.
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 

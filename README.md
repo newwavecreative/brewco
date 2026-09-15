@@ -125,9 +125,11 @@ that install's database — present on production, absent everywhere else, and
 free to drift. The trade-off is that the group shows as read-only in the ACF
 admin: **edit `inc/fields.php`, not the UI.**
 
-**Every field falls back to the copy the template shipped with.** ACF's
-`default_value` only fires when a post is *created*, so an existing page comes
-back with every field empty. The accessors take the original string as a
+**Every field falls back to the copy the template shipped with.** ACF only
+applies a field's `default_value` while the field has no stored value; once a
+page has been saved with a field blank, it comes back blank. So a brand-new
+field shows its default in the editor until the page is saved, but a field
+someone cleared does not. The accessors take the original string as a
 fallback (`brewco_field( 'hero_cta_label', 'Get a Custom Quote' )`), which
 means the page renders exactly as it shipped until someone deliberately
 overrides a field — and still renders if ACF is ever deactivated. Verified: with
