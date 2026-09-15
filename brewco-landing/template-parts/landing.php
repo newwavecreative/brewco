@@ -7,7 +7,7 @@
  *   photo CTA · fleet · partner stories · FAQ · quote · footer
  *
  * Included by templates/landing-template.php, which defines $A = plugin assets base URL.
- * Animation hooks: data-reveal | data-reveal-delay | data-parallax | data-scroll-zoom | data-rotate | data-count | data-flip
+ * Animation hooks: data-reveal | data-reveal-delay | data-parallax | data-scroll-zoom | data-rotate | data-count | data-flip | data-carousel
  *
  * CONTENT: driven by the ACF field group in inc/fields.php, via the accessors in
  * inc/helpers.php. Every getter carries the shipped copy as its fallback, so an
@@ -95,11 +95,11 @@ $fb_offices = array(
 	array( 'name' => 'London, England', 'city' => 'London, England', 'address' => "16 Great Queen Street\nCovent Garden, London WC2B 5AH", 'phone' => '+44 203 600 1025', 'phone_link' => '+442036001025' ),
 );
 $fb_stories = array(
-	array( 'brand' => 'IBM',                                   'text' => 'Fabricated and managed a mobile Cyber Tactical Operations Center and launched a tour in the United States. All assets were subsequently shipped to Europe for an ongoing mobile tour consisting of 3 assets and a large touring staff.' ),
-	array( 'brand' => 'McDonald’s',                            'text' => 'Builds and manages the fleet of McDonald’s Mobile Restaurants that activate throughout the United States — the 53’ McRig, 35’ Snack Truck, 14’ McCafe and two food trucks.' ),
-	array( 'brand' => 'PSEG Long Island',                      'text' => 'Fabricated and managed the first-ever mobile experience powered by solar. “My Smart Energy Lab” was self-sufficient and capable of 10 hours of solar-powered runtime per activation.' ),
-	array( 'brand' => 'Major League Baseball',                 'text' => 'Took 52 artifacts from the National Baseball Hall of Fame and Museum on the road for the “We Are Baseball” mobile experience — 14 trailers, 2 mobile stages and the first mobile IMAX theater.' ),
-	array( 'brand' => 'Texas Division of Emergency Management','text' => 'Trusted during a pandemic to fabricate and deliver 4 mobile medical ICUs that can function independently or together as a field hospital.' ),
+	array( 'brand' => 'IBM',                                   'text' => 'Fabricated and managed a mobile Cyber Tactical Operations Center and launched a tour in the United States. All assets were subsequently shipped to Europe for an ongoing mobile tour consisting of 3 assets and a large touring staff.', 'url' => '/work/ibm/' ),
+	array( 'brand' => 'McDonald’s',                            'text' => 'Builds and manages the fleet of McDonald’s Mobile Restaurants that activate throughout the United States — the 53’ McRig, 35’ Snack Truck, 14’ McCafe and two food trucks.', 'url' => '/work/mcdonalds/' ),
+	array( 'brand' => 'PSEG Long Island',                      'text' => 'Fabricated and managed the first-ever mobile experience powered by solar. “My Smart Energy Lab” was self-sufficient and capable of 10 hours of solar-powered runtime per activation.', 'url' => '/work/pseg-long-island/' ),
+	array( 'brand' => 'Major League Baseball',                 'text' => 'Took 52 artifacts from the National Baseball Hall of Fame and Museum on the road for the “We Are Baseball” mobile experience — 14 trailers, 2 mobile stages and the first mobile IMAX theater.', 'url' => '/work/the-national-baseball-hall-of-fame-and-museum/' ),
+	array( 'brand' => 'Texas Division of Emergency Management','text' => 'Trusted during a pandemic to fabricate and deliver 4 mobile medical ICUs that can function independently or together as a field hospital.', 'url' => '/work/the-texas-division-of-emergency-management/' ),
 );
 $fb_ffeat = array(
 	array( 'icon' => '◈', 'title' => '100% Employee-Owned', 'text' => 'Every owner has a stake in the outcome' ),
@@ -154,7 +154,7 @@ $fb_faqs = array(
 );
 
 $clients = brewco_rows( 'logobar_clients', $fb_clients, array( 'name', 'logo' ) );
-$stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' ) );
+$stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo', 'image', 'url' ) );
 /* FAQ rows need both halves: a question with no answer (or the reverse) would
    show an empty panel and publish an invalid FAQPage entry, so it's skipped. */
 $faqs = array_values( array_filter( brewco_rows( 'faqs', $fb_faqs, array( 'question', 'answer' ) ), function ( $f ) {
@@ -420,11 +420,14 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
   </div>
 </section>
 
-<!-- SECTION 10 — PARTNER STORIES (marquee)
+<!-- SECTION 10 — OUR WORK (partner-story carousel)
      Replaces the template's testimonial marquee — no real testimonials exist and
-     invented quotes attributed to named people are not an option. These are
-     brewco.com's own words from "Who We Are". The track is emitted twice for the
-     seamless loop, so each story is authored once. -->
+     invented quotes attributed to named people are not an option. The copy is
+     brewco.com's own words. Each story is a large photo slide with the client, a
+     blurb and a link to its case study; the photo is the row's own image, else the
+     featured image of the Brewco page it links to. It's a native horizontal
+     scroller with scroll-snap, so swipes, trackpads and the keyboard work without
+     JS; main.js adds mouse drag, the arrows and the dots. -->
 <section class="stories" id="our-work">
   <div class="brewco-container">
     <div class="section-head" data-reveal>
@@ -432,28 +435,67 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
       <h2><?php echo brewco_heading( 'stories_heading', 'The partner these brands', 'stories_heading_accent', 'trusted' ); ?></h2>
     </div>
   </div>
-  <div class="marquee marquee--cards" data-marquee data-reveal>
-    <div class="marquee__track">
-      <?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
-        <?php foreach ( $stories as $st ) : ?>
-          <?php
-          $sbrand = (string) brewco_row( $st, 'brand' );
-          $slogo  = brewco_image_data( is_array( $st ) && isset( $st['logo'] ) ? $st['logo'] : null );
-          ?>
-          <figure class="story"<?php echo $pass ? ' aria-hidden="true"' : ''; ?>>
-            <?php /* With a logo, the h3's accessible name is the img alt (the
-                     brand name), so the card keeps a real heading. */ ?>
-            <h3 class="story__brand<?php echo $slogo ? ' story__brand--logo' : ''; ?>">
-              <?php if ( $slogo ) : ?>
-                <img class="story__logo" src="<?php echo $slogo['url']; ?>"<?php echo brewco_img_dims( $slogo ); ?> alt="<?php echo $pass ? '' : esc_attr( '' !== $sbrand ? $sbrand : $slogo['alt'] ); ?>" loading="lazy" decoding="async">
+  <?php
+  $story_rows       = array_values( $stories );
+  $story_count      = count( $story_rows );
+  $story_link_label = trim( (string) brewco_field( 'stories_link_label', 'See the work' ) );
+  ?>
+  <div class="storycar" data-carousel data-reveal>
+    <div class="storycar__track" data-carousel-track tabindex="0" role="region" aria-roledescription="carousel"
+         aria-label="<?php echo esc_attr( brewco_field( 'stories_eyebrow', 'Our Work' ) ); ?>" data-lenis-prevent-horizontal>
+      <?php foreach ( $story_rows as $si => $st ) : ?>
+        <?php
+        $sbrand  = (string) brewco_row( $st, 'brand' );
+        $slogo   = brewco_image_data( is_array( $st ) && isset( $st['logo'] ) ? $st['logo'] : null );
+        $surl    = esc_url( trim( (string) brewco_row( $st, 'url' ) ) );
+        $simg_id = brewco_story_image_id( $st );
+        ?>
+        <article class="storycard<?php echo $simg_id ? '' : ' storycard--noimg'; ?>" data-carousel-slide
+                 aria-roledescription="slide" aria-label="<?php echo esc_attr( ( $si + 1 ) . ' of ' . $story_count ); ?>">
+          <?php if ( $simg_id ) : ?>
+            <?php
+            // The 2048px copy is the src fallback; WordPress adds a srcset, so each
+            // browser downloads the size it needs rather than the original upload.
+            echo wp_get_attachment_image( $simg_id, '2048x2048', false, array(
+                'class'     => 'storycard__img',
+                'alt'       => '',
+                'sizes'     => '(max-width: 700px) 86vw, min(74vw, 1080px)',
+                'loading'   => 0 === $si ? 'eager' : 'lazy',
+                'decoding'  => 'async',
+                'draggable' => 'false',
+            ) );
+            ?>
+          <?php endif; ?>
+          <div class="storycard__body">
+            <?php if ( $slogo ) : ?>
+              <span class="storycard__logo"><img src="<?php echo $slogo['url']; ?>"<?php echo brewco_img_dims( $slogo ); ?> alt="" loading="lazy" decoding="async" draggable="false"></span>
+            <?php endif; ?>
+            <h3 class="storycard__title">
+              <?php if ( '' !== $surl ) : ?>
+                <a class="storycard__link" href="<?php echo $surl; ?>" draggable="false"><?php echo esc_html( $sbrand ); ?></a>
               <?php else : ?>
                 <?php echo esc_html( $sbrand ); ?>
               <?php endif; ?>
             </h3>
-            <blockquote><?php echo esc_html( brewco_row( $st, 'text' ) ); ?></blockquote>
-          </figure>
-        <?php endforeach; ?>
-      <?php endfor; ?>
+            <p class="storycard__text"><?php echo esc_html( brewco_row( $st, 'text' ) ); ?></p>
+            <?php if ( '' !== $surl && '' !== $story_link_label ) : ?>
+              <span class="storycard__cta" aria-hidden="true"><?php echo esc_html( $story_link_label ); ?> <span class="storycard__arrow">&rarr;</span></span>
+            <?php endif; ?>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
+    <?php /* Hidden until main.js wires them up, so no-JS visitors don't get dead buttons. */ ?>
+    <div class="storycar__controls brewco-container" data-carousel-controls hidden>
+      <div class="storycar__dots" data-carousel-dots></div>
+      <div class="storycar__arrows">
+        <button type="button" class="storycar__btn" data-carousel-prev aria-label="Previous story">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="storycar__btn" data-carousel-next aria-label="Next story">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>

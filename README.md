@@ -141,9 +141,9 @@ has to write HTML to get "Award-Winning *Experiential Brand Strategy*". The
 accent always renders after the plain part.
 
 Repeaters cover the client bar, stats, services, vehicles, offices,
-stories, FAQ questions, footer highlights and social links. The two marquees (clients and
-partner stories) **emit their track twice in PHP** for the seamless loop — add
-each item once; the duplicate is generated. Short bullet lists inside a service
+stories, FAQ questions, footer highlights and social links. The client logo
+marquee **emits its track twice in PHP** for the seamless loop — add each
+client once; the duplicate is generated. Short bullet lists inside a service
 card are a textarea, one item per line.
 
 All output is escaped (`esc_html` / `esc_url` / `esc_attr`). Field values cannot
@@ -181,7 +181,6 @@ inject markup.
   (`data-speed="66"` in the markup). A CSS marquee's speed otherwise depends on
   how much is in it, so adding clients made it race; `main.js` now recomputes
   the duration from the track's width. Change the number to change the pace.
-  The partner-stories marquee still uses its fixed CSS duration.
 - **Service image slide:** service card images drift in from the side they sit
   on as the card scrolls up (the cards alternate, so odd cards enter from the
   right, even from the left). It is scroll-linked, not a one-shot animation:
@@ -190,11 +189,16 @@ inject markup.
   below), so it's visible outside the card; the section still clips it at the
   page edge. Off below 821px, where the layout stacks and images are centred,
   and off under `prefers-reduced-motion`.
-- **Partner-story logos:** each story in *Partner stories → Stories* takes a
-  logo, which replaces the brand name at the top of the card. The brand name
-  becomes the logo's alt text, and still shows as text when no logo is
-  uploaded. Card headers are held to the logo height (`--story-logo-h`) even
-  for text brands, so quotes stay level in a mixed set.
+- **Our Work carousel** (*Partner stories → Stories*): each story is a large
+  photo slide with the client as the title, a blurb, and a link to its case
+  study (e.g. `/work/ibm/`). The photo is the row's own *Photo* or, if that's
+  empty, the featured image of the Brewco page the link points to
+  (`brewco_story_image_id()`), so linking a story to its `/work/` page is
+  usually all it needs. An optional logo sits in a white badge above the
+  title. It's a native horizontal scroller with scroll-snap, so swipe,
+  trackpad and keyboard work without JS; `main.js` adds mouse drag (a drag
+  never opens the link), previous/next arrows and dots. Nothing
+  auto-advances. *Link label* sets the "See the work →" text.
 - **Vehicle links:** each row in *Vehicles → Vehicle types* has a *Link*.
   With a link the pill is clickable (and gets the hover lift); without one it's
   a plain pill. The built-in list links all ten to brewco.com's

@@ -214,6 +214,26 @@ function brewco_link( $name, $fallback ) {
 	return '' !== $url ? $url : esc_url( $fallback );
 }
 
+/**
+ * The attachment ID for a partner-story slide's photo: the row's own image if one
+ * was uploaded, otherwise the featured image of the page on this site that the
+ * story links to (e.g. /work/ibm/). 0 when there is neither, including links to
+ * other sites, anchors and anything esc_url() would reject.
+ */
+function brewco_story_image_id( $row ) {
+	$img = is_array( $row ) && isset( $row['image'] ) ? $row['image'] : null;
+	if ( is_array( $img ) && ! empty( $img['ID'] ) ) { return (int) $img['ID']; }
+	if ( is_numeric( $img ) && (int) $img > 0 ) { return (int) $img; }
+
+	$url = trim( (string) brewco_row( $row, 'url' ) );
+	if ( '' === $url || '' === esc_url( $url ) || ! function_exists( 'url_to_postid' ) ) { return 0; }
+	$bare = function ( $host ) { return preg_replace( '/^www\./', '', strtolower( (string) $host ) ); };
+	$host = wp_parse_url( $url, PHP_URL_HOST );
+	if ( $host && $bare( $host ) !== $bare( wp_parse_url( home_url(), PHP_URL_HOST ) ) ) { return 0; }
+	$post_id = url_to_postid( $host ? $url : home_url( $url ) );
+	return $post_id ? (int) get_post_thumbnail_id( $post_id ) : 0;
+}
+
 /** Row value with fallback, for repeater rows that may predate a sub-field. */
 function brewco_row( $row, $key, $fallback = '' ) {
 	return ( is_array( $row ) && isset( $row[ $key ] ) && '' !== $row[ $key ] ) ? $row[ $key ] : $fallback;

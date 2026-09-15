@@ -8,6 +8,7 @@
      - parallax translate and background zoom on scroll
      - flip cards (click / keyboard)
      - count-up stats
+     - Our Work carousel (mouse drag, arrows, dots)
    All effects no-op gracefully under prefers-reduced-motion.
    ============================================================= */
 (function () {
@@ -236,6 +237,126 @@
       });
     });
   }
+
+  /* ---------- 4c. Our Work carousel ----------
+     The track is a native horizontal scroller with scroll-snap, so touch swipes,
+     trackpads and keyboard scrolling already work without this. This adds what
+     native scroll can't: mouse drag, previous/next buttons, dots and a current
+     slide. Nothing auto-advances. Lenis ignores horizontal gestures on the track
+     (data-lenis-prevent-horizontal), so trackpad swipes aren't swallowed. */
+  document.querySelectorAll('[data-carousel]').forEach(function (car) {
+    var track = car.querySelector('[data-carousel-track]');
+    var slides = track ? Array.prototype.slice.call(track.querySelectorAll('[data-carousel-slide]')) : [];
+    if (!track || !slides.length) { return; }
+    var controls = car.querySelector('[data-carousel-controls]');
+    var prev = car.querySelector('[data-carousel-prev]');
+    var next = car.querySelector('[data-carousel-next]');
+    var dotsWrap = car.querySelector('[data-carousel-dots]');
+    var behavior = reduce ? 'auto' : 'smooth';
+    var current = 0;
+
+    // Where the track's scrollLeft sits when slide i is snapped into place. The
+    // first slide sits exactly at the track's start padding, so its offsetLeft
+    // is that padding. Reading scroll-padding from getComputedStyle doesn't
+    // work: it's a max()/calc() with a percentage, which comes back unresolved
+    // and parses as NaN, so every target was off by the padding.
+    var targetFor = function (i) {
+      var pad = slides[0].offsetLeft;
+      return Math.max(0, Math.min(slides[i].offsetLeft - pad, track.scrollWidth - track.clientWidth));
+    };
+    var nearest = function () {
+      var best = 0, bestDist = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var d = Math.abs(targetFor(i) - track.scrollLeft);
+        if (d < bestDist) { bestDist = d; best = i; }
+      }
+      return best;
+    };
+    var goTo = function (i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: targetFor(i), behavior: behavior });
+    };
+
+    var dots = [];
+    if (dotsWrap && slides.length > 1) {
+      slides.forEach(function (slide, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'storycar__dot';
+        b.setAttribute('aria-label', 'Go to story ' + (i + 1) + ' of ' + slides.length);
+        b.addEventListener('click', function () { goTo(i); });
+        dotsWrap.appendChild(b);
+        dots.push(b);
+      });
+    }
+
+    var sync = function () {
+      current = nearest();
+      var max = track.scrollWidth - track.clientWidth;
+      dots.forEach(function (b, i) { b.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+      slides.forEach(function (slide, i) { slide.classList.toggle('is-current', i === current); });
+      if (prev) { prev.disabled = track.scrollLeft <= 2; }
+      if (next) { next.disabled = track.scrollLeft >= max - 2; }
+    };
+    var ticking = false;
+    track.addEventListener('scroll', function () {
+      if (ticking) { return; }
+      ticking = true;
+      window.requestAnimationFrame(function () { ticking = false; sync(); });
+    }, { passive: true });
+    window.addEventListener('resize', sync);
+
+    if (prev) { prev.addEventListener('click', function () { goTo(current - 1); }); }
+    if (next) { next.addEventListener('click', function () { goTo(current + 1); }); }
+    track.addEventListener('keydown', function (e) {
+      if (e.target !== track) { return; }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+    });
+
+    // Mouse drag (touch and pen already scroll natively). Snap is off while
+    // dragging so the track follows the pointer, then the nearest slide eases into
+    // place; a quick flick past 60px moves one slide even if it didn't pass
+    // halfway. Any real drag cancels the click, so dragging across a slide never
+    // opens its case study.
+    var drag = null;
+    var suppressClick = false;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) { return; }
+      drag = { id: e.pointerId, x: e.clientX, left: track.scrollLeft, start: current, moved: false };
+    });
+    track.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) { return; }
+      var dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) > 6) {
+        drag.moved = true;
+        track.classList.add('is-dragging');
+        try { track.setPointerCapture(e.pointerId); } catch (err) { /* capture is optional */ }
+      }
+      if (drag.moved) { track.scrollLeft = drag.left - dx; }
+    });
+    var endDrag = function (e) {
+      if (!drag || e.pointerId !== drag.id) { return; }
+      var d = drag;
+      drag = null;
+      if (!d.moved) { return; }
+      suppressClick = true;
+      window.setTimeout(function () { suppressClick = false; }, 0);
+      var dx = e.clientX - d.x;
+      var i = nearest();
+      if (Math.abs(dx) > 60 && i === d.start) { i = d.start + (dx < 0 ? 1 : -1); }
+      goTo(i);
+      window.setTimeout(function () { track.classList.remove('is-dragging'); }, reduce ? 0 : 450);
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('click', function (e) {
+      if (suppressClick) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    if (controls) { controls.hidden = slides.length < 2; }
+    sync();
+  });
 
   /* ---------- 5. Flip cards ---------- */
   document.querySelectorAll('[data-flip]').forEach(function (card) {

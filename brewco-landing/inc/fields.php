@@ -267,19 +267,34 @@ function brewco_register_fields() {
 		brewco_f( 'text', 'stories_eyebrow', 'Eyebrow', array( 'default_value' => 'Our Work' ) ),
 		brewco_f( 'text', 'stories_heading', 'Heading', array( 'default_value' => 'The partner these brands' ) ),
 		brewco_f( 'text', 'stories_heading_accent', 'Heading (copper part)', array( 'default_value' => 'trusted' ) ),
+		brewco_f( 'text', 'stories_link_label', 'Link label', array(
+			'default_value' => 'See the work',
+			'instructions'  => 'Shown on every slide that has a link, followed by an arrow.',
+		) ),
 		brewco_f_rep( 'stories', 'Stories', array(
-			brewco_sf( 'image', 'stories', 'logo', 'Logo', array(
+			brewco_sf( 'image', 'stories', 'image', 'Photo', array(
+				'return_format' => 'array',
+				'preview_size'  => 'medium',
+				'instructions'  => 'The large background photo. Leave empty to use the featured image of the Brewco page this story links to. Landscape, at least 1600px wide.',
+			) ),
+			brewco_sf( 'text', 'stories', 'brand', 'Client / title', array(
+				'instructions' => 'The large title on the slide, e.g. “IBM”.',
+			) ),
+			brewco_sf( 'textarea', 'stories', 'text', 'Blurb', array(
+				'rows'         => 4,
+				'instructions' => 'Two or three sentences shown over the photo.',
+			) ),
+			brewco_sf( 'text', 'stories', 'url', 'Link', array(
+				'instructions' => 'The case study page, e.g. /work/ibm/. Leave blank for a slide with no link.',
+			) ),
+			brewco_sf( 'image', 'stories', 'logo', 'Logo (optional)', array(
 				'return_format' => 'array',
 				'preview_size'  => 'thumbnail',
-				'instructions'  => 'Replaces the brand name at the top of the card. Transparent PNG, cropped tight to the mark.',
+				'instructions'  => 'Shown in a small white badge above the title.',
 			) ),
-			brewco_sf( 'text', 'stories', 'brand', 'Brand', array(
-				'instructions' => 'Read to screen readers as the logo’s description. Shown as text instead if no logo is uploaded.',
-			) ),
-			brewco_sf( 'textarea', 'stories', 'text', 'Story', array( 'rows' => 4 ) ),
 		), array(
 			'button_label' => 'Add story',
-			'instructions' => 'The scrolling row duplicates these automatically — add each story once.',
+			'instructions' => 'Each story is one slide in the Our Work carousel. Drag rows to reorder.',
 		) ),
 
 		/* ----------------------------------------------------------- FAQ */
