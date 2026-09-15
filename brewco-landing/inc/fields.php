@@ -81,7 +81,6 @@ function brewco_register_fields() {
 			'default_value' => 'The Marketing Vehicle for the World’s Most Trusted Brands',
 			'instructions' => 'Line breaks here become line breaks on the page.',
 		) ),
-		brewco_f( 'textarea', 'hero_sub', 'Intro paragraph', array( 'rows' => 4 ) ),
 		brewco_f( 'text', 'hero_cta_label', 'Button label', array( 'default_value' => 'Get a Custom Quote' ) ),
 		brewco_f( 'text', 'hero_link_label', 'Secondary link label', array( 'default_value' => 'See our work' ) ),
 		brewco_f( 'gallery', 'hero_slides', 'Background slideshow', array(

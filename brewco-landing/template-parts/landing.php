@@ -197,7 +197,6 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
       <h1 class="hero__title" data-reveal data-reveal-delay="80"><?php echo brewco_t_br( 'hero_headline', 'The Marketing Vehicle for the World’s Most Trusted Brands' ); ?></h1>
     </div>
     <div class="hero__right" data-reveal data-reveal-delay="180">
-      <p class="hero__sub"><?php echo brewco_t( 'hero_sub', 'Brewco Marketing Group is a 100% employee-owned company dedicated to designing, fabricating, and managing custom experiences for our partners. For 25 years, we have created award-winning solutions that engage audiences where they work, live and play.' ); ?></p>
       <div class="hero__actions">
         <a href="#contact" class="btn btn--cta btn--lg"><?php echo brewco_t( 'hero_cta_label', 'Get a Custom Quote' ); ?></a>
         <a href="#work" class="hero__link"><?php echo brewco_t( 'hero_link_label', 'See our work' ); ?> &rarr;</a>

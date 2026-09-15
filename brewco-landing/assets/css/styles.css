@@ -204,8 +204,9 @@ p{margin:0}
 /* rating shown as plain text (no filled chip), like the reference */
 .hero__title{font-size:clamp(2.8rem,7.5vw,5.6rem);color:#fff;letter-spacing:-.03em;line-height:.98}
 .hero__right{padding-bottom:8px}
-.hero__sub{margin:0;font-size:clamp(1rem,1.3vw,1.12rem);max-width:540px;opacity:.9}
-.hero__actions{display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-top:26px}
+/* No top margin: the buttons follow the headline directly, at the same gap the
+   removed intro paragraph used. */
+.hero__actions{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
 .hero__link{color:#fff;font-weight:700;opacity:.9;transition:opacity .2s}
 .hero__link:hover{opacity:1}
 

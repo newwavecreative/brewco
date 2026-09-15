@@ -128,7 +128,7 @@ admin: **edit `inc/fields.php`, not the UI.**
 **Every field falls back to the copy the template shipped with.** ACF's
 `default_value` only fires when a post is *created*, so an existing page comes
 back with every field empty. The accessors take the original string as a
-fallback (`brewco_field( 'hero_sub', 'Brewco Marketing Group is…' )`), which
+fallback (`brewco_field( 'hero_cta_label', 'Get a Custom Quote' )`), which
 means the page renders exactly as it shipped until someone deliberately
 overrides a field — and still renders if ACF is ever deactivated. Verified: with
 ACF off, the output is text- and structure-identical to the deployed version.
