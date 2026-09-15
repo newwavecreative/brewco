@@ -1,7 +1,8 @@
 <?php
 /**
- * Landing page markup — section order mirrors the reference (quad.medvi.org):
- *   nav · hero · logos · statement · integrated · stats · services ·
+ * Landing page markup. Section order started from the reference (quad.medvi.org),
+ * with Services moved up to follow the statement:
+ *   nav · hero · logos · statement · services · integrated · stats ·
  *   photo CTA · fleet · quote · process · partner stories · CTA · footer
  *
  * Included by templates/landing-template.php, which defines $A = plugin assets base URL.
@@ -249,48 +250,7 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
   </div>
 </section>
 
-<!-- SECTION 05 — INTEGRATED TEAM -->
-<section class="showcase">
-  <span class="section-watermark" aria-hidden="true">Integrated</span>
-  <div class="brewco-container showcase__grid">
-    <div class="showcase__stage" data-reveal>
-      <div class="showcase__card" data-rotate>
-        <img src="<?php echo brewco_image_url( 'showcase_image', 'img/placeholder.svg' ); ?>" alt="">
-      </div>
-    </div>
-    <div class="showcase__body" data-reveal data-reveal-delay="140">
-      <span class="eyebrow"><?php echo brewco_t( 'showcase_eyebrow', 'The Difference' ); ?></span>
-      <h2><?php echo brewco_heading( 'showcase_heading', 'One integrated team,', 'showcase_heading_accent', 'start to finish' ); ?></h2>
-      <p><?php echo brewco_t( 'showcase_text', 'Brewco Marketing Group is a completely integrated company that removes the hassle and costs associated with 3rd-party vendors. We have an experienced team ready to bring your project to life.' ); ?></p>
-      <ul class="checklist">
-        <?php foreach ( brewco_lines( 'showcase_list', array( 'In-house designer and fabricators', 'Electricians and HVAC experts', 'Maintenance technicians and support staff' ) ) as $item ) : ?>
-          <li><?php echo esc_html( $item ); ?></li>
-        <?php endforeach; ?>
-      </ul>
-      <a href="#services" class="btn btn--dark"><?php echo brewco_t( 'showcase_cta_label', 'What We Do' ); ?></a>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 06 — STATS -->
-<section class="stats">
-  <div class="brewco-container">
-    <div class="stats__grid">
-      <?php $i = 0; foreach ( brewco_rows( 'stats', $fb_stats, array( 'label', 'value' ) ) as $stat ) : ?>
-        <div class="stat" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
-          <div class="stat__num"><span data-count="<?php echo esc_attr( brewco_row( $stat, 'value', 0 ) ); ?>">0</span><?php echo esc_html( brewco_row( $stat, 'suffix' ) ); ?></div>
-          <div class="stat__label"><?php echo esc_html( brewco_row( $stat, 'label' ) ); ?></div>
-        </div>
-      <?php $i++; endforeach; ?>
-    </div>
-    <div class="stats__headline" data-reveal>
-      <h2><?php echo brewco_heading( 'stats_heading', 'Experience that shows up', 'stats_heading_accent', 'where your audience is' ); ?></h2>
-      <p><?php echo brewco_t( 'stats_text', 'Our team of experiential marketing experts have logged millions of miles and executed thousands of event days across North America and Europe.' ); ?></p>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 07 — SERVICES -->
+<!-- SECTION 05 — SERVICES -->
 <section class="features" id="services">
   <span class="section-watermark" aria-hidden="true">Services</span>
   <div class="brewco-container">
@@ -329,6 +289,47 @@ $stories = brewco_rows( 'stories', $fb_stories, array( 'brand', 'text', 'logo' )
           <?php endif; ?>
         </article>
       <?php $i++; endforeach; ?>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 06 — INTEGRATED TEAM -->
+<section class="showcase">
+  <span class="section-watermark" aria-hidden="true">Integrated</span>
+  <div class="brewco-container showcase__grid">
+    <div class="showcase__stage" data-reveal>
+      <div class="showcase__card" data-rotate>
+        <img src="<?php echo brewco_image_url( 'showcase_image', 'img/placeholder.svg' ); ?>" alt="">
+      </div>
+    </div>
+    <div class="showcase__body" data-reveal data-reveal-delay="140">
+      <span class="eyebrow"><?php echo brewco_t( 'showcase_eyebrow', 'The Difference' ); ?></span>
+      <h2><?php echo brewco_heading( 'showcase_heading', 'One integrated team,', 'showcase_heading_accent', 'start to finish' ); ?></h2>
+      <p><?php echo brewco_t( 'showcase_text', 'Brewco Marketing Group is a completely integrated company that removes the hassle and costs associated with 3rd-party vendors. We have an experienced team ready to bring your project to life.' ); ?></p>
+      <ul class="checklist">
+        <?php foreach ( brewco_lines( 'showcase_list', array( 'In-house designer and fabricators', 'Electricians and HVAC experts', 'Maintenance technicians and support staff' ) ) as $item ) : ?>
+          <li><?php echo esc_html( $item ); ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <a href="#services" class="btn btn--dark"><?php echo brewco_t( 'showcase_cta_label', 'What We Do' ); ?></a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 07 — STATS -->
+<section class="stats">
+  <div class="brewco-container">
+    <div class="stats__grid">
+      <?php $i = 0; foreach ( brewco_rows( 'stats', $fb_stats, array( 'label', 'value' ) ) as $stat ) : ?>
+        <div class="stat" data-reveal<?php echo $i ? ' data-reveal-delay="' . ( 100 * $i ) . '"' : ''; ?>>
+          <div class="stat__num"><span data-count="<?php echo esc_attr( brewco_row( $stat, 'value', 0 ) ); ?>">0</span><?php echo esc_html( brewco_row( $stat, 'suffix' ) ); ?></div>
+          <div class="stat__label"><?php echo esc_html( brewco_row( $stat, 'label' ) ); ?></div>
+        </div>
+      <?php $i++; endforeach; ?>
+    </div>
+    <div class="stats__headline" data-reveal>
+      <h2><?php echo brewco_heading( 'stats_heading', 'Experience that shows up', 'stats_heading_accent', 'where your audience is' ); ?></h2>
+      <p><?php echo brewco_t( 'stats_text', 'Our team of experiential marketing experts have logged millions of miles and executed thousands of event days across North America and Europe.' ); ?></p>
     </div>
   </div>
 </section>
