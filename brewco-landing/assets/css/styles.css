@@ -732,8 +732,13 @@ p{margin:0}
 .storycard__title{margin:0;color:#fff;font-size:clamp(1.8rem,4.2vw,3.4rem);line-height:1.02;letter-spacing:-.02em}
 .storycard__link{color:inherit;text-decoration:none}
 .storycard__link::after{content:"";position:absolute;inset:0;z-index:1}
-.storycard__link:focus-visible{outline:none}
-.storycard:focus-within{box-shadow:inset 0 0 0 3px var(--accent-on-dark)}
+/* Focus. Beaver Builder's theme puts an orange outline on a:focus, which showed
+   around the title after any mouse click or drag. Drop it, and draw the keyboard
+   ring on the link's full-slide ::after instead: that layer sits above the
+   photo, whereas a ring on the card itself was painted underneath and never seen. */
+.storycard__link:focus{outline:none}
+.storycard__link:focus-visible::after{box-shadow:inset 0 0 0 3px var(--accent-on-dark);border-radius:var(--radius)}
+.storycar__track:focus:not(:focus-visible),.storycar__btn:focus:not(:focus-visible),.storycar__dot:focus:not(:focus-visible){outline:none}
 .storycard__text{margin:0;max-width:620px;color:rgba(255,255,255,.88);font-size:clamp(1rem,1.3vw,1.1rem);line-height:1.6}
 .storycard__cta{display:inline-flex;align-items:center;gap:10px;margin-top:4px;color:#fff;font-weight:700}
 .storycard__arrow{display:inline-block;color:var(--accent-on-dark);transition:transform .3s var(--ease)}

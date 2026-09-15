@@ -308,6 +308,15 @@
 
     if (prev) { prev.addEventListener('click', function () { goTo(current - 1); }); }
     if (next) { next.addEventListener('click', function () { goTo(current + 1); }); }
+    // Keyboard users tabbing through the slide links: bring the focused slide
+    // into place, so its focus ring isn't half off-screen. Ignored while the
+    // mouse is down, where a click or drag has its own movement.
+    track.addEventListener('focusin', function (e) {
+      if (drag) { return; }
+      var slide = e.target.closest ? e.target.closest('[data-carousel-slide]') : null;
+      var i = slides.indexOf(slide);
+      if (i > -1 && i !== current) { goTo(i); }
+    });
     track.addEventListener('keydown', function (e) {
       if (e.target !== track) { return; }
       if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
