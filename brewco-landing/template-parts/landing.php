@@ -518,10 +518,10 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
       <h2><?php echo brewco_heading( 'faq_heading', 'Frequently asked', 'faq_heading_accent', 'questions' ); ?></h2>
     </div>
     <div class="faq__list" data-reveal>
-      <?php foreach ( $faqs as $fi => $faq ) : ?>
+      <?php foreach ( $faqs as $faq ) : ?>
         <?php /* name= makes these an exclusive accordion (opening one closes the
                  others) where supported; elsewhere each simply opens on its own. */ ?>
-        <details class="faq__item" name="brewco-faq"<?php echo 0 === $fi ? ' open' : ''; ?>>
+        <details class="faq__item" name="brewco-faq">
           <summary class="faq__q"><h3><?php echo esc_html( brewco_row( $faq, 'question' ) ); ?></h3></summary>
           <div class="faq__a"><p><?php echo nl2br( esc_html( brewco_row( $faq, 'answer' ) ), false ); ?></p></div>
         </details>
