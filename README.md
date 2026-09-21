@@ -29,7 +29,7 @@ versions made claims Brewco cannot support:
 | Template section | Replaced with | Why |
 | --- | --- | --- |
 | "Us vs. The Old Way" line chart | **Vehicles** — the real fleet list | The chart plotted an unlabelled "results over time" trend with no data behind it. |
-| `$114/mo` pricing card | **Get a Custom Quote** — the four real offices | Brewco quotes every project to spec; their own CTA is a no-cost consultation. |
+| `$114/mo` pricing card | **Get Started** — a heading and a *Get a Custom Quote* button | Brewco quotes every project to spec. |
 | Testimonial marquee (Jane Doe et al.) | **Partner stories** — IBM, McDonald's, PSEG, MLB, Texas DEM | No real testimonials exist, and invented quotes attributed to named people are not an option. The partner stories are brewco.com's own words. |
 
 Also removed: the 4.9/Trustpilot rating badges, the "USA Made" pill, and the
@@ -243,12 +243,15 @@ inject markup.
   background zooms in as the section scrolls past, at the hero's rate
   (`ZOOM_PER_PX` in `main.js`); any `<img data-scroll-zoom>` gets the effect.
   Off under `prefers-reduced-motion`.
-- **Get Started (quote & offices)** is the last section and the page's call to
-  action. It carries `id="contact"`, so every *Get a Custom Quote* button lands
-  on it, and its own button goes to the contact page (*Quote & offices → Button
-  link*, default `/contact/`, also used by the footer's *Contact Us*). It's white
-  so it doesn't merge with the gray partner stories and footer around it. How It
-  Works and the closing "Let's get started" band were removed.
+- **Get Started** is the last section and the page's call to action: an
+  eyebrow, a heading and one button, no card. It carries `id="contact"`, so
+  every *Get a Custom Quote* button lands on it, and its own button goes to the
+  contact page (*Quote & offices → Button link*, default `/contact/`, also used
+  by the footer's *Contact Us*). The "Contact us for a no-cost consultation"
+  card with the office addresses was removed; the *Offices* repeater stays
+  because the footer's Offices column lists them. It's white so it doesn't merge
+  with the gray FAQ and footer around it. How It Works and the closing "Let's
+  get started" band were removed.
 - **FAQ** sits just above Get Started, on a slate band: a native `<details>`
   accordion (no JS; opening one closes the others via `name`, where supported)
   with every answer in the page source even while collapsed. Questions come

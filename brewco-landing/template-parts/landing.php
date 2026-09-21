@@ -550,37 +550,22 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
   <script type="application/ld+json"><?php echo wp_json_encode( $faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ); ?></script>
 </section>
 
-<!-- SECTION 12 — QUOTE / CONTACT (the page's closing call to action)
+<!-- SECTION 12 — GET STARTED (the page's closing call to action)
      Replaces the template's $114/mo pricing card; Brewco quotes to spec. It sits
      last and has the contact id, so every "Get a Custom Quote" button on the
-     page lands here. -->
+     page lands here. The office addresses stay editable (Quote & offices tab)
+     because the footer's Offices column lists them. -->
 <section class="quote" id="contact">
   <div class="brewco-container">
     <div class="section-head" data-reveal>
       <span class="eyebrow"><?php echo brewco_t( 'quote_eyebrow', 'Get Started' ); ?></span>
       <h2><?php echo brewco_heading( 'quote_heading', 'Every project is', 'quote_heading_accent', 'quoted to spec' ); ?></h2>
-    </div>
-    <div class="quotecard" data-reveal>
-      <div class="quotecard__lead">
-        <h3><?php echo brewco_t( 'quote_lead_heading', 'Contact us for a no-cost consultation.' ); ?></h3>
-        <p><?php echo brewco_t( 'quote_lead_text', 'Tell us what you are trying to accomplish and where you need to be. We will scope the asset, the build and the tour, and come back with a custom quote.' ); ?></p>
-        <?php /* CONFIRM: goes to /contact/ unless the Button link field is set. This
-                 section is where #contact now lands, so its own button leads to the
-                 contact page itself. */ ?>
+      <?php /* CONFIRM: goes to /contact/ unless the Button link field is set. This
+               section is where #contact lands, so its own button leads to the
+               contact page itself. */ ?>
+      <div class="quote__cta">
         <a href="<?php echo brewco_link( 'finalcta_cta_url', '/contact/' ); ?>" class="btn btn--cta btn--lg"><?php echo brewco_t( 'quote_cta_label', 'Get a Custom Quote' ); ?></a>
       </div>
-      <ul class="quotecard__locations">
-        <?php foreach ( brewco_rows( 'offices', $fb_offices, array( 'name', 'city', 'address', 'phone' ) ) as $o ) : ?>
-          <li>
-            <strong><?php echo esc_html( brewco_row( $o, 'name' ) ); ?></strong>
-            <span><?php echo nl2br( esc_html( brewco_row( $o, 'address' ) ), false ); ?></span>
-            <?php $tel = brewco_row( $o, 'phone_link' ); $ph = brewco_row( $o, 'phone' ); ?>
-            <?php if ( $ph ) : ?>
-              <a href="tel:<?php echo esc_attr( $tel ? $tel : preg_replace( '/[^0-9+]/', '', $ph ) ); ?>"><?php echo esc_html( $ph ); ?></a>
-            <?php endif; ?>
-          </li>
-        <?php endforeach; ?>
-      </ul>
     </div>
   </div>
 </section>
