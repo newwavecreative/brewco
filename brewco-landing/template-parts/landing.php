@@ -36,39 +36,48 @@ $fb_stats = array(
 	array( 'value' => 100, 'suffix' => '%', 'label' => 'Employee-Owned' ),
 	array( 'value' => 4,   'suffix' => '',  'label' => 'Offices, US & UK' ),
 );
+/* Each service's url is its page under brewco.com/what-we-do/ (all verified 200,
+   2026-09-22). A saved row with no link of its own falls back to the page for
+   the matching title (see brewco_service_url()). */
 $fb_services = array(
 	array(
 		'title' => 'Experiential Marketing',
+		'url'   => '/what-we-do/experiential/',
 		'body'  => 'Brewco Marketing Group immerses customers in face-to-face interactions and experiences that educate and entertain. Let us transform your marketing mix with innovative experiential marketing strategies and efficient implementation.',
 		'items' => "Mobile marketing tours and pop-up retail\nRetail activation and product sampling\nMobile training, command centers and STEM education",
 		'icon'  => '◇',
 	),
 	array(
 		'title' => 'Sponsorship Negotiation & Activation',
+		'url'   => '/what-we-do/sponsorship/',
 		'body'  => 'Negotiating and activating event sponsorships is a complex process. Brewco Marketing Group utilizes years of expertise and relationships to seamlessly coordinate sponsorship opportunities.',
 		'items' => "Identifying the right events\nNegotiating partnerships and display space\nExecuting on-site customer engagement",
 		'icon'  => '△',
 	),
 	array(
 		'title' => 'Design & Fabrication',
+		'url'   => '/what-we-do/design-fabrication/',
 		'body'  => 'A completely integrated company that removes the hassle and costs associated with 3rd-party vendors. We have an experienced team ready to bring your project to life, from first drawing to finished asset.',
 		'items' => "In-house design and fabrication\nElectrical and HVAC\nMaintenance and support staff",
 		'icon'  => '○',
 	),
 	array(
 		'title' => 'Brewco Health',
+		'url'   => '/what-we-do/brewco-health/',
 		'body'  => 'Mobile health solutions that directly contribute to increased medical access for underserved populations or communities in crisis. Working one-on-one with regional healthcare systems and emergency management departments, Brewco Health develops and builds mobile solutions to enhance medical services where they are needed the most.',
 		'items' => '',
 		'icon'  => '✚',
 	),
 	array(
 		'title' => 'Brewco Staging',
+		'url'   => '/what-we-do/brewco-staging/',
 		'body'  => 'Brewco Staging fulfills the need for mobile stages at both entertainment and corporate events. Based on the quality of our mobile stage inventory and a reputation for well-done event execution, Brewco Staging is proud to provide various mobile staging options.',
 		'items' => '',
 		'icon'  => '▤',
 	),
 	array(
 		'title' => 'Brewco Hospitality',
+		'url'   => '/what-we-do/brewco-hospitality/',
 		'body'  => 'Mobile hospitality assets for short-term or long-term lease. From VIP experiences to employee appreciation perks, Brewco Hospitality offers mobile assets featuring viewing decks, TVs, lounging furniture, private bathrooms, dining tables and more.',
 		'items' => '',
 		'icon'  => '◈',
@@ -317,6 +326,12 @@ if ( ! $faqs ) { $faqs = $fb_faqs; }
                   <li><?php echo esc_html( $item ); ?></li>
                 <?php endforeach; ?>
               </ul>
+            <?php endif; ?>
+            <?php $surl = brewco_service_url( $svc, $fb_services ); ?>
+            <?php if ( $surl ) : ?>
+              <div class="featurecard__cta">
+                <a href="<?php echo $surl; ?>" class="btn btn--dark"><?php echo esc_html( brewco_row( $svc, 'cta_label', 'Learn More' ) ); ?><span class="brewco-sr"> about <?php echo esc_html( brewco_row( $svc, 'title' ) ); ?></span></a>
+              </div>
             <?php endif; ?>
           </div>
           <?php $simg = brewco_image_data( is_array( $svc ) && isset( $svc['image'] ) ? $svc['image'] : null ); ?>

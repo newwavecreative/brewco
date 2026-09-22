@@ -187,6 +187,13 @@ function brewco_register_fields() {
 				'rows'         => 3,
 				'instructions' => 'One item per line. Leave blank for no list.',
 			) ),
+			brewco_sf( 'text', 'services', 'cta_label', 'Button label', array(
+				'default_value' => 'Learn More',
+				'instructions'  => 'Left blank, it reads Learn More.',
+			) ),
+			brewco_sf( 'text', 'services', 'cta_url', 'Button link', array(
+				'instructions' => 'Where the button goes: a page on this site (e.g. /what-we-do/experiential/), a section of this page (#contact) or a full URL. Left blank, the six original services go to their own page under /what-we-do/; any other card shows no button.',
+			) ),
 			brewco_sf( 'image', 'services', 'image', 'Image', array(
 				'return_format' => 'array',
 				'preview_size'  => 'thumbnail',

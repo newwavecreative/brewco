@@ -234,6 +234,24 @@ function brewco_story_image_id( $row ) {
 	return $post_id ? (int) get_post_thumbnail_id( $post_id ) : 0;
 }
 
+/**
+ * A service card's button link: the row's own Button link if set, otherwise the
+ * shipped page for a service with the same title (so rows saved before the
+ * button existed still get one), otherwise '' — no button.
+ */
+function brewco_service_url( $row, $fallbacks ) {
+	$own = trim( (string) brewco_row( $row, 'cta_url' ) );
+	if ( '' !== $own && '' !== esc_url( $own ) ) { return esc_url( $own ); }
+	$key = function ( $t ) { return preg_replace( '/[^a-z0-9]+/', '', strtolower( html_entity_decode( (string) $t ) ) ); };
+	$title = $key( brewco_row( $row, 'title' ) );
+	foreach ( $fallbacks as $fb ) {
+		if ( '' !== $title && $key( brewco_row( $fb, 'title' ) ) === $title && ! empty( $fb['url'] ) ) {
+			return esc_url( $fb['url'] );
+		}
+	}
+	return '';
+}
+
 /** Row value with fallback, for repeater rows that may predate a sub-field. */
 function brewco_row( $row, $key, $fallback = '' ) {
 	return ( is_array( $row ) && isset( $row[ $key ] ) && '' !== $row[ $key ] ) ? $row[ $key ] : $fallback;

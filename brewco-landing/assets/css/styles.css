@@ -122,6 +122,8 @@ p{margin:0}
 
 .brewco-container{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
 .text-cta{color:var(--cta)}
+/* Read by screen readers, not shown — e.g. which service a "Learn More" is for. */
+.brewco-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .text-accent{color:var(--accent)}
 .eyebrow{display:inline-block;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;color:var(--blue)}
 .section-head{max-width:640px;margin:0 auto clamp(32px,5vw,56px);text-align:center}
@@ -305,6 +307,7 @@ p{margin:0}
 .featurecard__body h3{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:12px}
 .featurecard__body p{color:var(--gray-500);margin-bottom:18px}
 .featurecard__body .checklist{margin:0}
+.featurecard__cta{margin-top:24px}
 .featurecard__icon{display:grid;place-items:center;aspect-ratio:1;border-radius:20px;font-size:4.5rem;color:var(--cta);
   background:linear-gradient(160deg,#fff,var(--gray-100));border:1px solid var(--gray-100)}
 /* Uploaded image in the square. "fill" crops a photo to the edges; "fit" keeps
